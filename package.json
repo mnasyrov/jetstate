@@ -1,0 +1,50 @@
+{
+  "name": "jetstate",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Mikhail Nasyrov",
+    "email": "mnasyrov.apps@gmail.com",
+    "url": "https://mnasyrov.com"
+  },
+  "homepage": "https://github.com/mnasyrov/jetstate#readme",
+  "bugs": {
+    "url": "https://github.com/mnasyrov/jetstate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mnasyrov/jetstate.git"
+  },
+  "keywords": [
+    "state-management",
+    "state",
+    "angular",
+    "rxjs",
+    "ngx",
+    "angular2",
+    "cqrs",
+    "store"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "peerDependencies": {
+    "@angular/core": ">=5.0.0 <8.0.0",
+    "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4"
+  },
+  "devDependencies": {
+    "@angular/core": "7.1.1",
+    "prettier": "1.15.3",
+    "rxjs": "6.3.3",
+    "tslint": "5.11.0",
+    "tslint-config-prettier": "1.17.0",
+    "typescript": "3.2.1",
+    "zone.js": "0.8.26"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "lint": "tslint \"src/**/*.ts\"",
+    "check-format": "prettier --list-different \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "tsc"
+  }
+}
