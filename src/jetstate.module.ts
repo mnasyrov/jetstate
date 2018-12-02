@@ -2,22 +2,22 @@ import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
 import {StateOptions} from './stateOptions';
 import {Store} from './store';
 
-@NgModule()
-export class StoreModule {
-    static STORE_MODULE_STATES_TOKEN = new InjectionToken('STORE_MODULE_STATES_TOKEN');
+export const JETSTATE_TOKEN_STORE_STATES = new InjectionToken('JETSTATE_TOKEN_STORE_STATES');
 
+@NgModule()
+export class JetStateModule {
     static forRoot(states: StateOptions<any>[] = []): ModuleWithProviders {
         return {
-            ngModule: StoreModule,
+            ngModule: JetStateModule,
             providers: [
                 {
-                    provide: StoreModule.STORE_MODULE_STATES_TOKEN,
+                    provide: JETSTATE_TOKEN_STORE_STATES,
                     useValue: states
                 },
                 {
-                    deps: [StoreModule.STORE_MODULE_STATES_TOKEN],
+                    deps: [JETSTATE_TOKEN_STORE_STATES],
                     provide: Store,
-                    useFactory: StoreModule.createStore
+                    useFactory: JetStateModule.createStore
                 }
             ]
         };

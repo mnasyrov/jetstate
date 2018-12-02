@@ -3,5 +3,5 @@ export * from './stateContext';
 export * from './stateDeclaration';
 export * from './stateOptions';
 export * from './stateValueSelector';
-export * from './store.module';
 export * from './store';
+export * from './jetstate.module';
