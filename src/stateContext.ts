@@ -1,13 +1,15 @@
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {distinctUntilChanged, map, take} from 'rxjs/operators';
 import {StateValueSelector} from './stateValueSelector';
 
 export class StateContext<StateModel> {
     private readonly state$: BehaviorSubject<Readonly<StateModel>>;
+    private readonly stateUpdates$: Subject<Readonly<StateModel>>;
 
     constructor(initialState: Readonly<StateModel>) {
         const copy = Object.assign({}, initialState);
         this.state$ = new BehaviorSubject<Readonly<StateModel>>(copy);
+        this.stateUpdates$ = new Subject<Readonly<StateModel>>();
     }
 
     getState(): Readonly<StateModel> {
@@ -18,9 +20,10 @@ export class StateContext<StateModel> {
         const current = this.state$.getValue();
         const merged = Object.assign({}, current, newState);
         this.state$.next(merged);
+        this.stateUpdates$.next(merged);
     }
 
-    selectValue<V>(selector: StateValueSelector<StateModel, V>): V {
+    getValue<V>(selector: StateValueSelector<StateModel, V>): V {
         return selector(this.getState());
     }
 
@@ -33,5 +36,16 @@ export class StateContext<StateModel> {
 
     selectOnce<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
         return this.select(selector).pipe(take(1));
+    }
+
+    observe<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
+        return this.stateUpdates$.pipe(
+            map(selector),
+            distinctUntilChanged()
+        );
+    }
+
+    observeOnce<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
+        return this.observe(selector).pipe(take(1));
     }
 }

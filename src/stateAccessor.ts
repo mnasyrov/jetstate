@@ -17,6 +17,10 @@ export abstract class StateAccessor<StateModel> {
         return this.context.patchState(newState);
     }
 
+    getValue<V>(selector: StateValueSelector<StateModel, V>): V {
+        return this.context.getValue(selector);
+    }
+
     select<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
         return this.context.select(selector);
     }
@@ -25,7 +29,11 @@ export abstract class StateAccessor<StateModel> {
         return this.context.selectOnce(selector);
     }
 
-    selectValue<V>(selector: StateValueSelector<StateModel, V>): V {
-        return this.context.selectValue(selector);
+    observe<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
+        return this.context.observe(selector);
+    }
+
+    observeOnce<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
+        return this.context.observeOnce(selector);
     }
 }
