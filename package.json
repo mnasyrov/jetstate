@@ -49,7 +49,7 @@
     }
   },
   "scripts": {
-    "clean": "rm -rf dist && yarn --cwd tests/ng-project clean",
+    "clean": "rm -rf dist && yarn --cwd test/ng-project clean",
     "lint": "tslint \"src/**/*.ts\"",
     "check-format": "prettier --list-different \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
