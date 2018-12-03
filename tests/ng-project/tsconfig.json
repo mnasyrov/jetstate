@@ -1,9 +1,9 @@
 {
   "include": [
-    "src/index.ts"
+    "test.module.ts"
   ],
   "compilerOptions": {
-    "outDir": "dist/es6",
+    "outDir": "build",
     "target": "es6",
     "module": "es6",
     "moduleResolution": "node",
@@ -15,10 +15,10 @@
     "sourceMap": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
-  },
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "jetstate": ["./build/jetstate"]
+    }
   }
 }

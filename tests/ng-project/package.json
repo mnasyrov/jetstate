@@ -1,0 +1,18 @@
+{
+  "name": "jetstate-tests-ng-project",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "@angular/core": "6.1.10",
+    "@angular/compiler": "6.1.10",
+    "@angular/compiler-cli": "6.1.10",
+    "rxjs": "6.3.3",
+    "typescript": "2.8.4",
+    "zone.js": "0.8.26"
+  },
+  "scripts": {
+    "clean": "rm -rf build",
+    "copy-deps": "mkdir -p build && cp -r ../../dist/es6 build/jetstate",
+    "build": "yarn install && yarn clean && yarn copy-deps && yarn ngc"
+  }
+}

@@ -5,9 +5,14 @@
   ],
   "rules": {
     "member-access": false,
+    "member-ordering": false,
     "class-name": true,
     "interface-name": false,
-    "array-type": [true, "array"],
+    "array-type": [
+      true,
+      "array"
+    ],
+    "object-literal-sort-keys": false,
     "comment-format": [
       true,
       "check-space"

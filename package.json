@@ -25,26 +25,27 @@
     "cqrs",
     "store"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "peerDependencies": {
     "@angular/core": ">=5.0.0 <8.0.0",
     "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4"
   },
   "devDependencies": {
+    "@angular/compiler": "7.1.1",
+    "@angular/compiler-cli": "7.1.1",
     "@angular/core": "7.1.1",
     "prettier": "1.15.3",
     "rxjs": "6.3.3",
     "tslint": "5.11.0",
     "tslint-config-prettier": "1.17.0",
-    "typescript": "3.2.1",
+    "typescript": "3.1.6",
     "zone.js": "0.8.26"
   },
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && yarn --cwd tests/ng-project clean",
     "lint": "tslint \"src/**/*.ts\"",
     "check-format": "prettier --list-different \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "tsc"
+    "build": "ngc",
+    "itest-build": "yarn --cwd tests/ng-project build"
   }
 }
