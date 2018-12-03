@@ -25,8 +25,6 @@
     "cqrs",
     "store"
   ],
-  "main": "dist/es6/index.js",
-  "types": "dist/es6/index.d.ts",
   "peerDependencies": {
     "@angular/core": ">=5.0.0 <8.0.0",
     "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4"
@@ -35,19 +33,29 @@
     "@angular/compiler": "7.1.1",
     "@angular/compiler-cli": "7.1.1",
     "@angular/core": "7.1.1",
+    "ng-packagr": "4.4.5",
     "prettier": "1.15.3",
     "rxjs": "6.3.3",
+    "tsickle": "0.34.0",
+    "tslib": "1.9.3",
     "tslint": "5.11.0",
     "tslint-config-prettier": "1.17.0",
     "typescript": "3.1.6",
     "zone.js": "0.8.26"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/index.ts"
+    }
   },
   "scripts": {
     "clean": "rm -rf dist && yarn --cwd tests/ng-project clean",
     "lint": "tslint \"src/**/*.ts\"",
     "check-format": "prettier --list-different \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "ngc",
-    "itest-build": "yarn --cwd tests/ng-project build"
+    "build": "ng-packagr -p package.json",
+    "itest-build": "yarn --cwd test/ng-project build",
+    "publish": "npm publish --dry-run dist",
+    "publish-do": "npm publish dist"
   }
 }

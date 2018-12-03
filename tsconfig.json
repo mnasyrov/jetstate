@@ -3,7 +3,7 @@
     "src/index.ts"
   ],
   "compilerOptions": {
-    "outDir": "dist/es6",
+    "outDir": "build",
     "target": "es6",
     "module": "es6",
     "moduleResolution": "node",

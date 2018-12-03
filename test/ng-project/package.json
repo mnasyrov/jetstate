@@ -12,7 +12,7 @@
   },
   "scripts": {
     "clean": "rm -rf build",
-    "copy-deps": "mkdir -p build && cp -r ../../dist/es6 build/jetstate",
+    "copy-deps": "cp -r ../../dist node_modules/jetstate",
     "build": "yarn install && yarn clean && yarn copy-deps && yarn ngc"
   }
 }
