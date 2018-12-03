@@ -54,8 +54,8 @@
     "check-format": "prettier --list-different \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "ng-packagr -p package.json",
-    "itest-build": "yarn --cwd test/ng-project build",
-    "publish": "npm publish --dry-run dist",
+    "itest": "yarn --cwd test/ng-project build",
+    "publish-check": "npm publish --dry-run dist",
     "publish-do": "npm publish dist"
   }
 }

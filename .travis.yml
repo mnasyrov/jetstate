@@ -15,4 +15,5 @@ script:
   - yarn lint
   - yarn check-format
   - yarn build
-  - yarn itest-build
+  - yarn itest
+  - yarn publish-check
