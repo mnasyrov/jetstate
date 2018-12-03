@@ -20,11 +20,22 @@ export class Store {
         this.contextStore.set(stateDeclaration.key, context);
     }
 
+    getContextByKey<T>(stateKey: string): StateContext<T> | undefined {
+        return this.contextStore.get(stateKey);
+    }
+
     getContext<T>(stateDeclaration: StateDeclaration<T>): StateContext<T> | undefined {
         return this.contextStore.get(stateDeclaration.key);
     }
 
-    getContextByKey<T>(stateKey: string): StateContext<T> | undefined {
-        return this.contextStore.get(stateKey);
+    /**
+     * @throws `Error` in case the context is not found.
+     */
+    getContextOrFail<T>(stateDeclaration: StateDeclaration<T>): StateContext<T> {
+        const context = this.getContext(stateDeclaration);
+        if (!context) {
+            throw new Error(`State context is not found: ${stateDeclaration.key}`);
+        }
+        return context;
     }
 }
