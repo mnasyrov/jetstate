@@ -1,6 +1,6 @@
 {
   "include": [
-    "src/index.ts"
+    "packages/*/src/**/*.ts"
   ],
   "compilerOptions": {
     "outDir": "build",
@@ -16,9 +16,5 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
-  },
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true
   }
 }

@@ -4,4 +4,3 @@ export * from './stateDeclaration';
 export * from './stateOptions';
 export * from './stateValueSelector';
 export * from './store';
-export * from './jetstate.module';

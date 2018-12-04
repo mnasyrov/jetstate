@@ -3,6 +3,7 @@
     "test.module.ts"
   ],
   "compilerOptions": {
+    "noEmit": true,
     "outDir": "build",
     "target": "es6",
     "module": "es6",

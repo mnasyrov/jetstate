@@ -11,8 +11,5 @@ install:
 
 script:
   - yarn clean
-  - yarn lint
-  - yarn check-format
-  - yarn build
-  - yarn itest
+  - yarn commit-check
   - yarn publish-check

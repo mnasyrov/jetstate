@@ -1,6 +1,5 @@
 import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
-import {StateDeclaration} from './stateDeclaration';
-import {Store} from './store';
+import {StateDeclaration, Store} from '@jetstate/core';
 
 @NgModule()
 export class JetStateModule {

@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {StateAccessor, StateDeclaration, Store} from 'jetstate';
+import {StateAccessor, StateDeclaration, Store} from '@jetstate/core';
 
 export interface TestStateModel {
     foo: Readonly<string>;
 }
-
 
 @Injectable()
 export class TestState extends StateAccessor<TestStateModel> {

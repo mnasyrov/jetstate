@@ -1,0 +1,53 @@
+{
+  "name": "@jetstate/angular",
+  "version": "0.0.6",
+  "license": "MIT",
+  "author": {
+    "name": "Mikhail Nasyrov",
+    "email": "mnasyrov.apps@gmail.com",
+    "url": "https://mnasyrov.com"
+  },
+  "homepage": "https://github.com/mnasyrov/jetstate#readme",
+  "bugs": {
+    "url": "https://github.com/mnasyrov/jetstate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mnasyrov/jetstate.git"
+  },
+  "keywords": [
+    "state-management",
+    "state",
+    "angular",
+    "rxjs",
+    "ngx",
+    "angular2",
+    "cqrs",
+    "store"
+  ],
+  "peerDependencies": {
+    "@angular/core": ">=5.0.0 <8.0.0",
+    "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4",
+    "@jetstate/core": "0.0.6"
+  },
+  "dependencies": {
+    "tslib": "^1.9.0"
+  },
+  "devDependencies": {
+    "@jetstate/core": "0.0.6"
+  },
+  "main": "src/index.ts",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/index.ts",
+      "umdModuleIds": {
+        "@jetstate/core": "jetstate.core"
+      }
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "ng-packagr -p package.json",
+    "itest": "yarn --cwd itest check-aot-compilation"
+  }
+}
