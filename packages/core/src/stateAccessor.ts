@@ -1,11 +1,11 @@
-import {Observable} from 'rxjs';
+import {Consumer, Subscription} from './pubsub';
 import {StateDescriptor} from './stateDescriptor';
 import {StateValueSelector} from './stateValueSelector';
 import {Store} from './store';
 
 export class StateAccessor<StateModel> {
-    private readonly _store: Store;
-    private readonly _descriptor: StateDescriptor<StateModel>;
+    protected readonly _store: Store;
+    protected readonly _descriptor: StateDescriptor<StateModel>;
 
     constructor(store: Store, descriptor: StateDescriptor<StateModel>) {
         this._store = store;
@@ -28,19 +28,15 @@ export class StateAccessor<StateModel> {
         return this._store.getValue(this._descriptor, selector);
     }
 
-    select<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
-        return this._store.select(this._descriptor, selector);
+    listen<V>(selector: StateValueSelector<StateModel, V>, consumer: Consumer<V>): Subscription {
+        return this._store.listen(this._descriptor, selector, consumer);
     }
 
-    selectOnce<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
-        return this._store.selectOnce(this._descriptor, selector);
-    }
-
-    observe<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
-        return this._store.observe(this._descriptor, selector);
-    }
-
-    observeOnce<V>(selector: StateValueSelector<StateModel, V>): Observable<V> {
-        return this._store.observeOnce(this._descriptor, selector);
+    listenChanges<V>(
+        selector: StateValueSelector<StateModel, V>,
+        consumer: Consumer<V>,
+        onlyOnce?: boolean
+    ): Subscription {
+        return this._store.listenChanges(this._descriptor, selector, consumer, onlyOnce);
     }
 }

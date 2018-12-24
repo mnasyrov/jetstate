@@ -1,17 +1,10 @@
-import {Observable} from 'rxjs';
-import {distinctUntilChanged, map, take} from 'rxjs/operators';
 import {StateContext} from './internal/stateContext';
+import {Consumer, Subscription} from './pubsub';
 import {StateDescriptor} from './stateDescriptor';
 import {StateValueSelector} from './stateValueSelector';
 
 export class Store {
     private readonly contextStore = new Map<string, StateContext<any>>();
-
-    constructor(descriptors?: ReadonlyArray<StateDescriptor<any>>) {
-        if (descriptors) {
-            descriptors.forEach(state => this.initState(state));
-        }
-    }
 
     dumpStore(): Readonly<{[key: string]: any}> {
         const dump: {[key: string]: any} = {};
@@ -46,44 +39,26 @@ export class Store {
     }
 
     getValue<StateModel, V>(descriptor: StateDescriptor<StateModel>, selector: StateValueSelector<StateModel, V>): V {
-        const state = this.getContext(descriptor).getState();
-        return selector(state);
+        return this.getContext(descriptor).getValue(selector);
     }
 
-    select<StateModel, V>(
+    listen<StateModel, V>(
         descriptor: StateDescriptor<StateModel>,
-        selector: StateValueSelector<StateModel, V>
-    ): Observable<V> {
+        selector: StateValueSelector<StateModel, V>,
+        consumer: Consumer<V>
+    ): Subscription {
         const context = this.getContext(descriptor);
-        return context.state$.pipe(
-            map(selector),
-            distinctUntilChanged()
-        );
+        return context.listen(selector, consumer);
     }
 
-    selectOnce<StateModel, V>(
+    listenChanges<StateModel, V>(
         descriptor: StateDescriptor<StateModel>,
-        selector: StateValueSelector<StateModel, V>
-    ): Observable<V> {
-        return this.select(descriptor, selector).pipe(take(1));
-    }
-
-    observe<StateModel, V>(
-        descriptor: StateDescriptor<StateModel>,
-        selector: StateValueSelector<StateModel, V>
-    ): Observable<V> {
+        selector: StateValueSelector<StateModel, V>,
+        consumer: Consumer<V>,
+        onlyOnce?: boolean
+    ): Subscription {
         const context = this.getContext(descriptor);
-        return context.stateUpdates$.pipe(
-            map(selector),
-            distinctUntilChanged()
-        );
-    }
-
-    observeOnce<StateModel, V>(
-        descriptor: StateDescriptor<StateModel>,
-        selector: StateValueSelector<StateModel, V>
-    ): Observable<V> {
-        return this.observe(descriptor, selector).pipe(take(1));
+        return context.listenChanges(selector, consumer, onlyOnce);
     }
 
     private setNewContext<StateModel>(descriptor: StateDescriptor<StateModel>): StateContext<StateModel> {

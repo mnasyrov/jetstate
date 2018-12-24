@@ -1,5 +1,6 @@
 import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
-import {StateDeclaration, Store} from '@jetstate/core';
+import {StateDeclaration, StateDescriptor, Store} from '@jetstate/core';
+import {RxStore} from '@jetstate/rxjs';
 
 @NgModule()
 export class JetStateModule {
@@ -14,15 +15,28 @@ export class JetStateModule {
                     useValue: states
                 },
                 {
-                    provide: Store,
+                    provide: RxStore,
                     deps: [JetStateModule.STORE_STATES_TOKEN],
-                    useFactory: JetStateModule.createStore
+                    useFactory: JetStateModule.createRxStore
+                },
+                {
+                    provide: Store,
+                    deps: [RxStore],
+                    useFactory: JetStateModule.getStore
                 }
             ]
         };
     }
 
-    static createStore(states?: ReadonlyArray<StateDeclaration<any>>): Store {
-        return new Store(states);
+    static createRxStore(states?: ReadonlyArray<StateDescriptor<any>>): RxStore {
+        const store = new RxStore();
+        if (states) {
+            states.forEach(state => store.initState(state));
+        }
+        return store;
+    }
+
+    static getStore(store: RxStore): Store {
+        return store;
     }
 }

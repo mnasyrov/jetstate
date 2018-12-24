@@ -17,18 +17,18 @@
   },
   "keywords": [
     "state-management",
+    "store",
     "state",
-    "angular",
-    "rxjs",
-    "ngx",
-    "angular2",
     "cqrs",
-    "store"
+    "rxjs",
+    "angular",
+    "angular2",
+    "ngx"
   ],
   "peerDependencies": {
     "@angular/core": ">=5.0.0 <8.0.0",
-    "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4",
-    "@jetstate/core": "0.0.6"
+    "@jetstate/core": "0.0.6",
+    "@jetstate/rxjs": "0.0.6"
   },
   "dependencies": {
     "tslib": "^1.9.0"
@@ -41,7 +41,8 @@
     "lib": {
       "entryFile": "src/index.ts",
       "umdModuleIds": {
-        "@jetstate/core": "jetstate.core"
+        "@jetstate/core": "jetstate.core",
+        "@jetstate/rxjs": "jetstate.rxjs"
       }
     }
   },
