@@ -1,4 +1,6 @@
-import {Consumer, Emitter, Subscription} from '../pubsub';
+import {Consumer} from '../pubsub/consumer';
+import {Emitter} from '../pubsub/emitter';
+import {Subscription} from '../pubsub/subscription';
 import {StateValueSelector} from '../stateValueSelector';
 
 /**

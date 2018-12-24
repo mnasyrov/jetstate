@@ -1,5 +1,6 @@
 import {StateContext} from './internal/stateContext';
-import {Consumer, Subscription} from './pubsub';
+import {Consumer} from './pubsub/consumer';
+import {Subscription} from './pubsub/subscription';
 import {StateDescriptor} from './stateDescriptor';
 import {StateValueSelector} from './stateValueSelector';
 
