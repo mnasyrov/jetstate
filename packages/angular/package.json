@@ -27,14 +27,11 @@
   ],
   "peerDependencies": {
     "@angular/core": ">=5.0.0 <8.0.0",
-    "@jetstate/core": "0.0.6",
-    "@jetstate/rxjs": "0.0.6"
+    "@jetstate/core": "0.0.7",
+    "@jetstate/rxjs": "0.0.7"
   },
   "dependencies": {
     "tslib": "^1.9.0"
-  },
-  "devDependencies": {
-    "@jetstate/core": "0.0.6"
   },
   "main": "src/index.ts",
   "ngPackage": {
