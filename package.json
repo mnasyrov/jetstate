@@ -53,6 +53,8 @@
     "itest": "wsrun --stages --exclude-missing itest",
     "commit-check": "yarn lint && yarn format-check && yarn build && yarn itest",
     "publish-check": "wsrun --serial --bin npm publish --dry-run dist",
-    "publish-do": "wsrun --serial --bin npm -- publish dist --access public"
+    "publish-do": "wsrun --serial --bin npm -- publish dist --access public",
+    "--- NPM/Yarn hooks ---": "",
+    "version": "yarn wsrun \"exec yarn version -- --new-version ${npm_package_version}\""
   }
 }
