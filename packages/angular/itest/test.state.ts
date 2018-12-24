@@ -15,6 +15,6 @@ export class TestState extends StateAccessor<TestStateModel> {
     };
 
     constructor(store: Store) {
-        super(store.getContextOrFail(TestState.stateDeclaration));
+        super(store, TestState.stateDeclaration);
     }
 }
