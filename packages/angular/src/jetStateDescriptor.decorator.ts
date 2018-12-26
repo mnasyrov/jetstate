@@ -1,5 +1,5 @@
 import {StateDescriptor} from '@jetstate/core';
-import {defineStateDescriptor} from './internal/metadata';
+import {defineJetStateDescriptor} from './internal/metadata';
 
 // tslint:disable:ban-types
 
@@ -19,9 +19,9 @@ export function JetStateDescriptor<Model extends object>(
 ) {
     return (constructor: Function) => {
         if (typeof descriptor === 'string' && defaults) {
-            defineStateDescriptor(constructor, {key: descriptor, defaults});
+            defineJetStateDescriptor(constructor, {key: descriptor, defaults});
             return;
         }
-        defineStateDescriptor(constructor, descriptor);
+        defineJetStateDescriptor(constructor, descriptor);
     };
 }

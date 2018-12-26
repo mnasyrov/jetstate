@@ -1,15 +1,15 @@
 import {NgModule} from '@angular/core';
 import {JetStateModule} from '@jetstate/angular';
-import {TestNgJetState} from './testNgJetState';
+import {TestJetState} from './testJetState';
 import {TestState} from './testState';
 
 @NgModule({
+    providers: [TestState],
     imports: [
         JetStateModule.forRoot({
             descriptors: [TestState.descriptor],
-            states: [TestNgJetState]
+            states: [TestJetState]
         })
-    ],
-    providers: [TestState]
+    ]
 })
 export class TestModule {}

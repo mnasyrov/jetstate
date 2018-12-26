@@ -21,7 +21,11 @@ export class Store {
 
     registerState(descriptor: StateDescriptor<any>) {
         if (!this.hasState(descriptor)) {
-            this.getOrCreateState(descriptor).reset();
+            const state = this.getOrCreateState(descriptor);
+            const defaults = typeof descriptor === 'string' ? undefined : descriptor.defaults;
+            if (defaults) {
+                state.reset(defaults);
+            }
         }
     }
 

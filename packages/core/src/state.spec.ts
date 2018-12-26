@@ -27,47 +27,18 @@ describe('State', () => {
             expect(state.current).toEqual({foo: 'baz', xyz: 1});
         });
 
-        it('should reset to defaults in case of a partial new state ', () => {
+        it('should reset in case of a partial new state ', () => {
             const state = new State({foo: 'bar', xyz: 0});
             state.reset({foo: 'baz', xyz: 1});
-            state.reset({foo: 'abc'});
-            expect(state.current).toEqual({foo: 'abc', xyz: 0});
+            state.reset({foo: 'abc'} as any);
+            expect(state.current).toEqual({foo: 'abc'});
         });
 
-        it('should reset to defaults in case a new state is not specified', () => {
-            const state = new State({foo: 'bar'});
-            state.reset({foo: 'baz'});
-            state.reset();
-            expect(state.current).toEqual({foo: 'bar'});
-        });
-    });
-
-    describe('method reset()', () => {
-        it('should reset to a new state', () => {
-            const state = new State({foo: 'bar', xyz: 0});
-            state.reset({foo: 'baz', xyz: 1});
-            expect(state.current).toEqual({foo: 'baz', xyz: 1});
-        });
-
-        it('should reset to defaults in case of a partial new state ', () => {
-            const state = new State({foo: 'bar', xyz: 0});
-            state.reset({foo: 'baz', xyz: 1});
-            state.reset({foo: 'abc'});
-            expect(state.current).toEqual({foo: 'abc', xyz: 0});
-        });
-
-        it('should reset to defaults in case a new state is not specified', () => {
-            const state = new State({foo: 'bar'});
-            state.reset({foo: 'baz'});
-            state.reset();
-            expect(state.current).toEqual({foo: 'bar'});
-        });
-
-        it('should reset to defaults not a patched current state by defaults', () => {
+        it('should reset in case a current state has an extra field', () => {
             const state = new State({foo: 'bar', xyz: 0});
             state.patch({extraField: 1} as any);
-            state.reset({foo: 'abc'});
-            expect(state.current).toEqual({foo: 'abc', xyz: 0});
+            state.reset({foo: 'abc'} as any);
+            expect(state.current).toEqual({foo: 'abc'});
         });
     });
 
@@ -93,13 +64,6 @@ describe('State', () => {
 
             state.patch(undefined as any);
             expect(state.current).toBe(expectedState);
-        });
-
-        it('should reset to defaults in case a new state is not specified', () => {
-            const state = new State({foo: 'bar'});
-            state.reset({foo: 'baz'});
-            state.reset();
-            expect(state.current).toEqual({foo: 'bar'});
         });
     });
 
@@ -184,7 +148,7 @@ describe('State', () => {
             state.listen(
                 it => it.x,
                 x => {
-                    state.reset({y: x * x});
+                    state.reset({x: 1, y: x * x, z: 0});
                     state.patch({z: x * x * 10});
                 }
             );
@@ -224,7 +188,7 @@ describe('State', () => {
             state.listenChanges(
                 it => it.x,
                 x => {
-                    state.reset({y: x * x});
+                    state.reset({x: 1, y: x * x, z: 0});
                     state.patch({z: x * x * 10});
                 }
             );

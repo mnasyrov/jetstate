@@ -4,7 +4,6 @@ import {Subscription} from './pubsub/subscription';
 import {StateValueSelector} from './stateValueSelector';
 
 export class State<Model extends object> {
-    private readonly _defaults: Readonly<Model>;
     private readonly emitter: Emitter<Readonly<Model>> = new Emitter<Readonly<Model>>();
     private readonly selectedValues = new WeakMap<StateValueSelector<Model, any>, any>();
     private state: Readonly<Model>;
@@ -13,25 +12,20 @@ export class State<Model extends object> {
     private pendingPatchState: Readonly<Partial<Model>> | undefined = undefined;
 
     constructor(defaults?: Readonly<Model>) {
-        this._defaults = Object.assign({}, defaults) as Model;
         this.state = Object.assign({}, defaults) as Model;
-    }
-
-    get defaults(): Readonly<Model> {
-        return this._defaults;
     }
 
     get current(): Readonly<Model> {
         return this.state;
     }
 
-    reset(newState?: Partial<Model>) {
-        this.pendingResetState = Object.assign({}, this._defaults, newState);
+    reset(newState: Readonly<Model>) {
+        this.pendingResetState = Object.assign({}, newState);
         this.pendingPatchState = undefined;
         this.applyPendingStates();
     }
 
-    patch(newState: Partial<Model>) {
+    patch(newState: Partial<Readonly<Model>>) {
         if (newState === undefined || newState === null) {
             return;
         }

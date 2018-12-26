@@ -1,9 +1,9 @@
 import {Inject, InjectionToken, Injector, ModuleWithProviders, NgModule, Optional} from '@angular/core';
 import {State, StateDescriptor} from '@jetstate/core';
-import {getStateDescriptor} from './internal/metadata';
+import {getJetStateDescriptor} from './internal/metadata';
 import {JetStore} from './jetStore';
 
-type JetStateConstructor = new (...args: any[]) => object;
+type JetStateConstructor = new (defaults?: any) => object;
 
 export interface JetStateModuleOptions {
     descriptors?: StateDescriptor<any>[];
@@ -42,15 +42,15 @@ export class JetStateModule {
         }
 
         if (options.states) {
-            options.states.forEach(state => {
-                const descriptor = getStateDescriptor(state);
+            options.states.forEach(stateConstructor => {
+                const descriptor = getJetStateDescriptor(stateConstructor);
                 if (!descriptor) {
-                    throw new Error(`Not found a state descriptor for: ${state}`);
+                    throw new Error(`Not found a state descriptor for: ${stateConstructor}`);
                 }
 
-                const stateInstance = injector.get(state);
+                const stateInstance = injector.get(stateConstructor);
                 if (!stateInstance) {
-                    throw new Error(`State instance is not provided: ${state}`);
+                    throw new Error(`State instance is not provided: ${stateConstructor}`);
                 }
 
                 if (stateInstance instanceof State) {
