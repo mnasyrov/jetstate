@@ -13,8 +13,9 @@ API and docs are unstable and **will be** changed.
 
 ## Installation
 
-    npm install --save @jetstate/core
-    npm install --save @jetstate/angular
+Angular project:
+
+    npm install --save @jetstate/angular @jetstate/core @jetstate/rxjs
     
 _TODO_
 
