@@ -33,19 +33,17 @@
   "dependencies": {
     "tslib": "^1.9.0"
   },
-  "main": "src/index.ts",
   "ngPackage": {
     "lib": {
-      "entryFile": "src/index.ts",
+      "entryFile": "index.ts",
       "umdModuleIds": {
         "@jetstate/core": "jetstate.core",
         "@jetstate/rxjs": "jetstate.rxjs"
       }
-    }
+    },
+    "dest": "../../build/@jetstate/angular"
   },
   "scripts": {
-    "clean": "rm -rf dist",
-    "build": "ng-packagr -p package.json",
-    "itest": "yarn --cwd itest check-aot-compilation"
+    "build": "ng-packagr -p package.json"
   }
 }

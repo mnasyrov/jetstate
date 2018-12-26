@@ -1,3 +1,3 @@
 import {StateDeclaration} from './stateDeclaration';
 
-export type StateDescriptor<StateModel> = string | StateDeclaration<StateModel>;
+export type StateDescriptor<Model extends object> = string | StateDeclaration<Model>;

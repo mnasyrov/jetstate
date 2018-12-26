@@ -1,82 +1,61 @@
-import {StateContext} from './internal/stateContext';
-import {Consumer} from './pubsub/consumer';
-import {Subscription} from './pubsub/subscription';
+import {State} from './state';
 import {StateDescriptor} from './stateDescriptor';
-import {StateValueSelector} from './stateValueSelector';
 
 export class Store {
-    private readonly contextStore = new Map<string, StateContext<any>>();
+    private readonly states = new Map<string, State<any>>();
 
-    dumpStore(): Readonly<{[key: string]: any}> {
+    dump(): Readonly<{[key: string]: any}> {
         const dump: {[key: string]: any} = {};
-        this.contextStore.forEach((context, key) => {
-            dump[key] = context.getState();
+        this.states.forEach((state, key) => {
+            dump[key] = state.current;
         });
         return dump;
     }
 
-    restoreDump(dump: {[key: string]: any}) {
+    restore(dump: {[key: string]: any}) {
         const keys = Object.getOwnPropertyNames(dump);
-        keys.forEach(key => this.resetState(key, dump[key]));
+        keys.forEach(key => {
+            this.getOrCreateState(key).reset(dump[key]);
+        });
     }
 
-    initState<StateModel>(descriptor: StateDescriptor<StateModel>) {
-        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
-        if (!this.contextStore.has(key)) {
-            this.resetState(descriptor);
+    registerState(descriptor: StateDescriptor<any>) {
+        if (!this.hasState(descriptor)) {
+            this.getOrCreateState(descriptor).reset();
         }
     }
 
-    getState<StateModel>(descriptor: StateDescriptor<StateModel>): Readonly<StateModel> {
-        return this.getContext(descriptor).getState();
-    }
-
-    patchState<StateModel>(descriptor: StateDescriptor<StateModel>, newState: Partial<StateModel>) {
-        this.getContext(descriptor).patch(newState);
-    }
-
-    resetState<StateModel>(descriptor: StateDescriptor<StateModel>, newState?: Partial<StateModel>) {
-        this.getContext(descriptor).reset(newState);
-    }
-
-    getValue<StateModel, V>(descriptor: StateDescriptor<StateModel>, selector: StateValueSelector<StateModel, V>): V {
-        return this.getContext(descriptor).getValue(selector);
-    }
-
-    listen<StateModel, V>(
-        descriptor: StateDescriptor<StateModel>,
-        selector: StateValueSelector<StateModel, V>,
-        consumer: Consumer<V>
-    ): Subscription {
-        const context = this.getContext(descriptor);
-        return context.listen(selector, consumer);
-    }
-
-    listenChanges<StateModel, V>(
-        descriptor: StateDescriptor<StateModel>,
-        selector: StateValueSelector<StateModel, V>,
-        consumer: Consumer<V>,
-        onlyOnce?: boolean
-    ): Subscription {
-        const context = this.getContext(descriptor);
-        return context.listenChanges(selector, consumer, onlyOnce);
-    }
-
-    private setNewContext<StateModel>(descriptor: StateDescriptor<StateModel>): StateContext<StateModel> {
+    hasState(descriptor: StateDescriptor<any>): boolean {
         const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
+        return this.states.has(key);
+    }
+
+    getState<Model extends object>(descriptor: StateDescriptor<Model>): State<Model> {
+        return this.getOrCreateState(descriptor);
+    }
+
+    setState<Model extends object>(descriptor: StateDescriptor<Model>, state: State<Model>) {
+        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
+        this.states.set(key, state);
+    }
+
+    removeState(descriptor: StateDescriptor<any>) {
+        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
+        this.states.delete(key);
+    }
+
+    private getOrCreateState<Model extends object>(descriptor: StateDescriptor<Model>): State<Model> {
+        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
+        let state: State<Model> = this.states.get(key) as State<Model>;
+        if (!state) {
+            state = this.createNewState(descriptor);
+            this.states.set(key, state);
+        }
+        return state;
+    }
+
+    private createNewState<Model extends object>(descriptor: StateDescriptor<Model>): State<Model> {
         const defaults = typeof descriptor === 'string' ? undefined : descriptor.defaults;
-        const context = new StateContext<StateModel>(key, defaults);
-        this.contextStore.set(key, context);
-        return context;
-    }
-
-    private getContext<StateModel>(descriptor: StateDescriptor<StateModel>): StateContext<StateModel> {
-        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
-        const context = this.contextStore.get(key);
-        if (context) {
-            return context;
-        } else {
-            return this.setNewContext(descriptor);
-        }
+        return new State<Model>(defaults);
     }
 }

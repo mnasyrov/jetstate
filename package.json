@@ -3,7 +3,8 @@
   "version": "0.0.7",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "license": "MIT",
   "author": {
@@ -33,9 +34,12 @@
     "@angular/compiler": "7.1.4",
     "@angular/compiler-cli": "7.1.4",
     "@angular/core": "7.1.4",
+    "@types/jest": "23.3.10",
+    "jest": "23.6.0",
     "ng-packagr": "4.4.5",
     "prettier": "1.15.3",
     "rxjs": "6.3.3",
+    "ts-jest": "23.10.5",
     "tsickle": "0.34.0",
     "tslib": "1.9.3",
     "tslint": "5.12.0",
@@ -45,16 +49,19 @@
     "zone.js": "0.8.26"
   },
   "scripts": {
-    "clean": "wsrun clean",
+    "clean": "rm -rf build && wsrun --exclude-missing clean",
     "lint": "tslint \"packages/*/src/**/*.ts\"",
-    "format-check": "prettier --list-different \"packages/*/{src,test,itest}/**/*.ts\"",
-    "format": "prettier --write \"packages/*/{src,test,itest}/**/*.ts\"",
+    "format-check": "prettier --list-different \"packages/*/{src,test}/**/*.ts\"",
+    "format": "prettier --write \"packages/*/{src,test}/**/*.ts\"",
+    "test": "jest",
     "build": "wsrun --stages build",
-    "itest": "wsrun --stages --exclude-missing itest",
-    "commit-check": "yarn lint && yarn format-check && yarn build && yarn itest",
-    "publish-check": "wsrun --serial --bin npm publish --dry-run dist",
-    "publish-do": "wsrun --serial --bin npm -- publish dist --access public",
-    "--- NPM/Yarn hooks ---": "",
+    "check-commit": "yarn lint && yarn format-check && yarn build && yarn test",
+    "##  Helpers  ": "",
+    "dist-link": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} link",
+    "dist-unlink": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} unlink",
+    "check-publish": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --dry-run",
+    "do-publish": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --access public",
+    "##  NPM/Yarn hooks": "",
     "version": "yarn wsrun \"exec yarn version -- --new-version ${npm_package_version}\""
   }
 }

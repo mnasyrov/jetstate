@@ -1,1 +1,1 @@
-export type StateValueSelector<StateModel, Value> = (state: Readonly<StateModel>) => Value;
+export type StateValueSelector<Model extends object, Value> = (state: Readonly<Model>) => Value;

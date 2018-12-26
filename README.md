@@ -44,12 +44,12 @@ Building:
     
 Before commit:
     
-    yarn commit-check
+    yarn check-commit
     
     
-Publishing:
+Publish to NPM (for maintainers):
 
-    yarn commit-check
+    yarn check-commit
     yarn clean && yarn build
-    yarn publish-check
-    npm run publish-do --otp=<CODE>
+    yarn check-publish
+    npm run do-publish --otp=<CODE>

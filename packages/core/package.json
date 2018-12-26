@@ -26,12 +26,11 @@
   },
   "ngPackage": {
     "lib": {
-      "entryFile": "src/index.ts"
-    }
+      "entryFile": "index.ts"
+    },
+    "dest": "../../build/@jetstate/core"
   },
-  "main": "src/index.ts",
   "scripts": {
-    "clean": "rm -rf dist",
     "build": "ng-packagr -p package.json"
   }
 }

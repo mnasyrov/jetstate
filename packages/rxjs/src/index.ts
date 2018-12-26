@@ -1,2 +1,1 @@
-export * from './rxStateAccessor';
-export * from './rxStore';
+export * from './rxState';

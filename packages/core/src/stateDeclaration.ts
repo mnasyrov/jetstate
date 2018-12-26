@@ -1,4 +1,4 @@
-export type StateDeclaration<StateModel> = Readonly<{
+export type StateDeclaration<Model extends object> = Readonly<{
     key: string;
-    defaults: Readonly<StateModel>;
+    defaults: Readonly<Model>;
 }>;

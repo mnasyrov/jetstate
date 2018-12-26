@@ -7,5 +7,5 @@ install:
 
 script:
   - yarn clean
-  - yarn commit-check
-  - yarn publish-check
+  - yarn check-commit
+  - yarn check-publish

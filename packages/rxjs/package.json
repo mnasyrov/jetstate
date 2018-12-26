@@ -31,15 +31,14 @@
   },
   "ngPackage": {
     "lib": {
-      "entryFile": "src/index.ts",
+      "entryFile": "index.ts",
       "umdModuleIds": {
         "@jetstate/core": "jetstate.core"
       }
-    }
+    },
+    "dest": "../../build/@jetstate/rxjs"
   },
-  "main": "src/index.ts",
   "scripts": {
-    "clean": "rm -rf dist",
     "build": "ng-packagr -p package.json"
   }
 }
