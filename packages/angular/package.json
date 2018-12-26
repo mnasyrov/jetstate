@@ -1,6 +1,6 @@
 {
   "name": "@jetstate/angular",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "author": {
     "name": "Mikhail Nasyrov",
@@ -27,8 +27,8 @@
   ],
   "peerDependencies": {
     "@angular/core": ">=5.0.0 <8.0.0",
-    "@jetstate/core": "0.0.7",
-    "@jetstate/rxjs": "0.0.7"
+    "@jetstate/core": "0.0.8",
+    "@jetstate/rxjs": "0.0.8"
   },
   "dependencies": {
     "tslib": "^1.9.0"

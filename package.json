@@ -1,6 +1,6 @@
 {
   "name": "jetstate",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -62,6 +62,6 @@
     "check-publish": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --dry-run",
     "do-publish": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --access public",
     "##  NPM/Yarn hooks": "",
-    "version": "yarn wsrun \"exec yarn version -- --new-version ${npm_package_version}\""
+    "version": "wsrun version --new-version ${npm_package_version}"
   }
 }
