@@ -1,6 +1,6 @@
 {
   "name": "@jetstate/rxjs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "author": {
     "name": "Mikhail Nasyrov",
@@ -23,7 +23,7 @@
     "rxjs"
   ],
   "peerDependencies": {
-    "@jetstate/core": "0.0.8",
+    "@jetstate/core": "0.0.9",
     "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4"
   },
   "dependencies": {
