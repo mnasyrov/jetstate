@@ -1,4 +1,4 @@
-# 🚀 JetState 
+# JetState 🚀 
 
 _Clean State Management for Angular and RxJS._
 
@@ -8,21 +8,80 @@ _Clean State Management for Angular and RxJS._
 
 ## Work in progress
 
-API and docs are unstable and **will be** changed.
+The library is under active development. Its API and docs **will be changed**.
 
 
-## Installation
+## Why?
 
-Angular project:
-
-    npm install --save @jetstate/angular @jetstate/core @jetstate/rxjs
-    
-_TODO_
+JetState is created to fight with bloated solutions by others libs. There are a lot of modern tools for building reactive UI and business logic, e.g. es6 async/await and RxJS. What apps need today is a reactive state which increases productivity of a developer. Write the code, not fight with bloated Flux/Redux patterns. 
 
 
 ## Usage
 
-_TODO_
+### Angular project
+
+Install dependencies:
+
+```bash
+yarn add @jetstate/angular @jetstate/core @jetstate/rxjs
+
+# Or: npm install --save @jetstate/angular @jetstate/core @jetstate/rxjs
+```
+    
+
+Declare a state:
+
+```typescript
+import {JetState, JetStateDescriptor} from '@jetstate/angular';
+
+export interface GreeterStateModel {
+    name: Readonly<string>;
+}
+
+@JetStateDescriptor<GreeterStateModel>('GreeterState', {
+    name: 'World'
+})
+export class GreeterState extends JetState<GreeterStateModel> {
+    static readonly welcomeMessage = (state: GreeterStateModel) => `Hello ${state.name}!`;
+}
+```
+
+
+Import `JetStateModule` to an app:
+
+```typescript
+import {NgModule} from '@angular/core';
+import {JetStateModule} from '@jetstate/angular';
+import {GreeterState} from './greeter.state';
+
+@NgModule({
+    imports: [
+        JetStateModule.forRoot({states: [GreeterState]})
+    ]
+})
+export class AppModule {}
+``` 
+
+
+Use the state:
+
+```typescript
+import {Component} from '@angular/core';
+import {Observable} from 'rxjs';
+import {GreeterState} from './greeter.state';
+
+@Component({
+    selector: 'greeter',
+    template: `{{message$ | async}}`
+})
+export class GreeterComponent {
+    readonly message$: Observable<string>;
+    
+    constructor(state: GreeterState) {
+        this.message$ = state.select(GreeterState.welcomeMessage); 
+    }
+}
+```
 
 
 ## Development
