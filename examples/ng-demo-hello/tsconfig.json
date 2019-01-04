@@ -1,0 +1,32 @@
+{
+  "include": [
+    "src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "outDir": "build/out-tsc",
+    "target": "es6",
+    "module": "es6",
+    "moduleResolution": "node",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "strict": true,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@jetstate/angular": [
+        "../../build/@jetstate/angular"
+      ],
+      "@jetstate/rxjs": [
+        "../../build/@jetstate/rxjs"
+      ],
+      "@jetstate/core": [
+        "../../build/@jetstate/core"
+      ]
+    }
+  }
+}
