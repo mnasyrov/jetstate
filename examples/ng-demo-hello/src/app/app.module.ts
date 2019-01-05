@@ -7,7 +7,7 @@ import {AppComponent} from './app.component';
 import {AppState} from './app.state';
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, JetStateModule.forRoot({states: [AppState]})],
+    imports: [BrowserModule, FormsModule, JetStateModule.forRoot([AppState])],
     declarations: [AppComponent],
     providers: [],
     bootstrap: [AppComponent]

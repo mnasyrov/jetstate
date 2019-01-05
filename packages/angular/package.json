@@ -26,11 +26,10 @@
     "ngx"
   ],
   "peerDependencies": {
-    "@angular/core": ">=5.0.0 <8.0.0",
-    "@jetstate/core": "0.0.9",
-    "@jetstate/rxjs": "0.0.9"
+    "@angular/core": ">=5.0.0 <8.0.0"
   },
   "dependencies": {
+    "@jetstate/core": "0.0.9",
     "tslib": "^1.9.0"
   },
   "sideEffects": false,
@@ -38,11 +37,13 @@
     "lib": {
       "entryFile": "index.ts",
       "umdModuleIds": {
-        "@jetstate/core": "jetstate.core",
-        "@jetstate/rxjs": "jetstate.rxjs"
+        "@jetstate/core": "jetstate.core"
       }
     },
-    "dest": "../../build/@jetstate/angular"
+    "dest": "../../build/@jetstate/angular",
+    "whitelistedNonPeerDependencies": [
+      "@jetstate/core"
+    ]
   },
   "scripts": {
     "build": "ng-packagr -p package.json"

@@ -23,9 +23,9 @@ JetState is created to fight with bloated solutions by others libs. There are a 
 Install dependencies:
 
 ```bash
-yarn add @jetstate/angular @jetstate/core @jetstate/rxjs
+yarn add @jetstate/angular
 
-# Or: npm install --save @jetstate/angular @jetstate/core @jetstate/rxjs
+# Or: npm install --save @jetstate/angular
 ```
     
 
@@ -56,7 +56,7 @@ import {GreeterState} from './greeter.state';
 
 @NgModule({
     imports: [
-        JetStateModule.forRoot({states: [GreeterState]})
+        JetStateModule.forRoot([GreeterState])
     ]
 })
 export class AppModule {}

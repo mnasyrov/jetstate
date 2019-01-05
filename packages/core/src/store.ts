@@ -3,63 +3,72 @@ import {StateDescriptor} from './stateDescriptor';
 
 export class Store {
     private readonly states = new Map<string, State<any>>();
+    private readonly _parentStore: Store | undefined;
 
-    dump(): Readonly<{[key: string]: any}> {
-        const dump: {[key: string]: any} = {};
-        this.states.forEach((state, key) => {
-            dump[key] = state.current;
-        });
-        return dump;
+    constructor(parentStore?: Store) {
+        this._parentStore = parentStore;
     }
 
-    restore(dump: {[key: string]: any}) {
-        const keys = Object.getOwnPropertyNames(dump);
-        keys.forEach(key => {
-            this.getOrCreateState(key).reset(dump[key]);
-        });
+    get parentStore(): Store | undefined {
+        return this._parentStore;
     }
 
-    registerState(descriptor: StateDescriptor<any>) {
-        if (!this.hasState(descriptor)) {
-            const state = this.getOrCreateState(descriptor);
-            const defaults = typeof descriptor === 'string' ? undefined : descriptor.defaults;
-            if (defaults) {
-                state.reset(defaults);
-            }
+    snapshot(withParent?: boolean): Readonly<{[key: string]: any}> {
+        let data: {[key: string]: any} = {};
+        if (withParent && this.parentStore) {
+            data = this.parentStore.snapshot(withParent);
         }
+        this.states.forEach((state, key) => {
+            data[key] = state.current;
+        });
+        return data;
     }
 
-    hasState(descriptor: StateDescriptor<any>): boolean {
-        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
-        return this.states.has(key);
+    reset(data: {[stateKey: string]: any}, withParent?: boolean) {
+        const keys = Object.getOwnPropertyNames(data);
+        keys.forEach(key => {
+            const state = this.getState(key, !withParent);
+            if (state) {
+                state.reset(data[key]);
+            }
+        });
     }
 
-    getState<Model extends object>(descriptor: StateDescriptor<Model>): State<Model> {
-        return this.getOrCreateState(descriptor);
+    hasState(descriptor: StateDescriptor<any>, ownState?: boolean): boolean {
+        const key = Store.getStateKey(descriptor);
+        if (this.states.has(key)) {
+            return true;
+        }
+        if (!ownState && this._parentStore) {
+            return this._parentStore.hasState(key);
+        }
+        return false;
     }
 
-    setState<Model extends object>(descriptor: StateDescriptor<Model>, state: State<Model>) {
-        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
-        this.states.set(key, state);
-    }
-
-    removeState(descriptor: StateDescriptor<any>) {
-        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
-        this.states.delete(key);
-    }
-
-    private getOrCreateState<Model extends object>(descriptor: StateDescriptor<Model>): State<Model> {
-        const key: string = typeof descriptor === 'string' ? descriptor : descriptor.key;
-        let state: State<Model> = this.states.get(key) as State<Model>;
-        if (!state) {
-            state = this.createNewState(descriptor);
-            this.states.set(key, state);
+    getState<Model extends object>(descriptor: StateDescriptor<Model>, ownState?: boolean): State<Model> | undefined {
+        const key = Store.getStateKey(descriptor);
+        let state: State<Model> | undefined = this.states.get(key) as State<Model>;
+        if (!state && !ownState && this._parentStore) {
+            state = this._parentStore.getState(key);
         }
         return state;
     }
 
-    private createNewState<Model extends object>(descriptor: StateDescriptor<Model>): State<Model> {
-        const defaults = typeof descriptor === 'string' ? undefined : descriptor.defaults;
-        return new State<Model>(defaults);
+    setState<Model extends object>(descriptor: StateDescriptor<Model>, state: State<Model>) {
+        const key = Store.getStateKey(descriptor);
+        this.states.set(key, state);
+    }
+
+    removeState(descriptor: StateDescriptor<any>) {
+        const key: string = Store.getStateKey(descriptor);
+        this.states.delete(key);
+    }
+
+    static getStateKey(descriptor: StateDescriptor<any>): string {
+        return typeof descriptor === 'string' ? descriptor : descriptor.key;
+    }
+
+    static getStateDefaults<Model extends object>(descriptor: StateDescriptor<Model>): Readonly<Model> | undefined {
+        return typeof descriptor === 'string' ? undefined : descriptor.defaults;
     }
 }

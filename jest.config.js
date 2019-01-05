@@ -7,7 +7,6 @@ module.exports = {
     coverageDirectory: 'build/coverage',
     roots: [
         '<rootDir>/packages/core/src',
-        '<rootDir>/packages/rxjs/src',
         '<rootDir>/packages/angular/src'
     ],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

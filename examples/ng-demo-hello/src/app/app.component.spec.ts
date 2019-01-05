@@ -9,7 +9,7 @@ describe('AppComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [FormsModule, JetStateModule.forRoot({states: [AppState]})],
+            imports: [FormsModule, JetStateModule.forRoot([AppState])],
             declarations: [AppComponent]
         }).compileComponents();
 

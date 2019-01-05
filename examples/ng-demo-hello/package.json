@@ -10,8 +10,6 @@
     "@angular/platform-browser": "7.1.4",
     "@angular/platform-browser-dynamic": "7.1.4",
     "@jetstate/angular": "0.0.9",
-    "@jetstate/core": "0.0.9",
-    "@jetstate/rxjs": "0.0.9",
     "rxjs": "6.3.3",
     "zone.js": "0.8.26"
   },
