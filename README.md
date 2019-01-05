@@ -6,7 +6,7 @@ _Clean State Management for Angular and RxJS._
 [![npm version](https://badge.fury.io/js/%40jetstate%2Fcore.svg)](https://www.npmjs.com/@jetstate/core)
 
 
-## Work in progress
+## Work in progress 🏗
 
 The library is under active development. Its API and docs **will be changed**.
 
