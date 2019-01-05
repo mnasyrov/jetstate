@@ -35,19 +35,18 @@ Declare a state:
 import {JetState, JetStateDescriptor} from '@jetstate/angular';
 
 export interface GreeterStateModel {
-    name: Readonly<string>;
+    userName: Readonly<string>;
 }
 
 @JetStateDescriptor<GreeterStateModel>('GreeterState', {
-    name: 'World'
+    userName: 'World'
 })
 export class GreeterState extends JetState<GreeterStateModel> {
-    static readonly welcomeMessage = (state: GreeterStateModel) => `Hello ${state.name}!`;
 }
 ```
 
 
-Import `JetStateModule` to an app:
+Add the state to an app:
 
 ```typescript
 import {NgModule} from '@angular/core';
@@ -77,8 +76,12 @@ import {GreeterState} from './greeter.state';
 export class GreeterComponent {
     readonly message$: Observable<string>;
     
-    constructor(state: GreeterState) {
-        this.message$ = state.select(GreeterState.welcomeMessage); 
+    constructor(private state: GreeterState) {
+        this.message$ = state.select(state => `Hello ${state.userName}!`); 
+    }
+    
+    changeUserName(value: string) {
+        this.state.patch({userName: value});
     }
 }
 ```
