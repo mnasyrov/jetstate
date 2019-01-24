@@ -9,7 +9,7 @@ _Clean State Management for Angular and RxJS._
 
 ## Work in progress 🏗
 
-The library is under active development. API and docs **will be changed**.
+API and docs **will be changed** – the library is not stable.
 
 
 ## Why?
