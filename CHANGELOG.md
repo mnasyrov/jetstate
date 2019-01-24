@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.11"></a>
+## [0.0.11](https://github.com/mnasyrov/jetstate/compare/v0.0.10...v0.0.11) (2019-01-24)
+
+
+### Bug Fixes
+
+* **core:** Fixed emitting state changes for multiple consumers which are subscribed with the same selector. ([34a2267](https://github.com/mnasyrov/jetstate/commit/34a2267))
+
+
+
 <a name="0.0.10"></a>
 ## 0.0.10 (2019-01-05)
 
