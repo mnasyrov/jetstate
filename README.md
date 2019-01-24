@@ -110,10 +110,12 @@ Release (for maintainers):
 ```bash
 git checkout master; git pull origin master
 yarn check-commit
-yarn dist-build
 yarn check-release
 yarn release
 git push --follow-tags origin master
+
+yarn dist-build
+yarn check-publish
 npm run publish-packages
 ```
 

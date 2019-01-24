@@ -66,7 +66,7 @@
     "publish-packages": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --access public",
     "dist-link": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} link",
     "dist-unlink": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} unlink",
-    "--  NPM/Yarn hooks --": "",
-    "version": "wsrun version --new-version ${npm_package_version}"
+    "--  standard-version hooks --": "",
+    "postbump": "wsrun version --new-version ${npm_package_version}"
   }
 }
