@@ -50,6 +50,11 @@
     "wsrun": "3.6.2",
     "zone.js": "0.8.26"
   },
+  "standard-version": {
+    "scripts": {
+      "postbump": "yarn standard-version-postbump"
+    }
+  },
   "scripts": {
     "clean": "rm -rf build && wsrun --exclude-missing clean",
     "lint": "tslint \"{examples,packages}/*/src/**/*.ts\"",
@@ -62,11 +67,11 @@
     "check-commit": "yarn lint && yarn check-format && yarn build && yarn test",
     "check-publish": "test -e build/@jetstate/angular/package.json && ls -1d build/@jetstate/* | xargs -n 1 npm publish --dry-run",
     "check-release": "yarn check-publish && standard-version --dry-run",
-    "release": "standard-version",
+    "release": "standard-version --commit-all",
     "publish-packages": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --access public",
     "dist-link": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} link",
     "dist-unlink": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} unlink",
-    "--  standard-version hooks --": "",
-    "postbump": "wsrun version --new-version ${npm_package_version}"
+    "-- Hooks --": "",
+    "standard-version-postbump": "wsrun version --new-version ${npm_package_version} && git add -A"
   }
 }
