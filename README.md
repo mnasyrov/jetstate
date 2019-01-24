@@ -2,13 +2,14 @@
 
 _Clean State Management for Angular and RxJS._
 
-[![Build Status](https://travis-ci.org/mnasyrov/jetstate.svg?branch=master)](https://travis-ci.org/mnasyrov/jetstate)
 [![npm version](https://badge.fury.io/js/%40jetstate%2Fcore.svg)](https://www.npmjs.com/@jetstate/core)
+[![build Status](https://travis-ci.org/mnasyrov/jetstate.svg?branch=master)](https://travis-ci.org/mnasyrov/jetstate)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 
 ## Work in progress 🏗
 
-The library is under active development. Its API and docs **will be changed**.
+The library is under active development. API and docs **will be changed**.
 
 
 ## Why?
@@ -90,29 +91,32 @@ export class GreeterComponent {
 ## Development
 
 Tools:
+* [Node.js](https://nodejs.org) v11+
+* [Yarn](https://yarnpkg.com) v1.12+
 
-* Node.js: v11
-* Yarn: v1.12
+Development scripts:
+* `yarn start` – runs a development server in watching mode.
+* `yarn lint` – checks source code by static analysis tools.
+* `yarn test` – runs unit tests.
+* `yarn check-format` – check formatting of source code.
+* `yarn format` – formats source code by [prettier](https://prettier.io/) tool.
+* `yarn check-commit` – runs all necessary checks, tests and builds to ensure the commit will be green.
 
+Build scripts: 
+* `yarn build` – compiles sources.
 
-Start:
+Release (for maintainers):
 
-    yarn install
-    
-    
-Building:
+```bash
+git checkout master; git pull origin master
+yarn check-commit
+yarn dist-build
+yarn check-release
+yarn release
+git push --follow-tags origin master
+npm run publish-packages
+```
 
-    yarn build
-    
-    
-Before commit:
-    
-    yarn check-commit
-    
-    
-Publish to NPM (for maintainers):
+## License
 
-    yarn check-commit
-    yarn clean && yarn build
-    yarn check-publish
-    npm run do-publish --otp=<CODE>
+[MIT](LICENSE)

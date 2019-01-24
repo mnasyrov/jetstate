@@ -1,11 +1,8 @@
 {
   "name": "jetstate",
+  "description": "JetState - clean state management for reactive applications and components",
   "version": "0.0.10",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "examples/*"
-  ],
   "license": "MIT",
   "author": {
     "name": "Mikhail Nasyrov",
@@ -30,6 +27,10 @@
     "cqrs",
     "store"
   ],
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "devDependencies": {
     "@angular/compiler": "7.1.4",
     "@angular/compiler-cli": "7.1.4",
@@ -39,6 +40,7 @@
     "ng-packagr": "4.4.5",
     "prettier": "1.15.3",
     "rxjs": "6.3.3",
+    "standard-version": "4.4.0",
     "ts-jest": "23.10.5",
     "tsickle": "0.34.0",
     "tslib": "1.9.3",
@@ -51,17 +53,20 @@
   "scripts": {
     "clean": "rm -rf build && wsrun --exclude-missing clean",
     "lint": "tslint \"{examples,packages}/*/src/**/*.ts\"",
-    "format-check": "prettier --list-different \"{examples,packages}/*/{src,test}/**/*.ts\"",
     "format": "prettier --write \"{examples,packages}/*/{src,test}/**/*.ts\"",
-    "build": "wsrun --stages build",
     "test": "jest && wsrun --exclude-missing test",
-    "check-commit": "yarn lint && yarn format-check && yarn build && yarn test",
-    "##  Helpers  ": "",
+    "build": "wsrun --stages build",
+    "dist-build": "yarn clean && yarn build",
+    "--  Helpers  --": "",
+    "check-format": "prettier --list-different \"{examples,packages}/*/{src,test}/**/*.ts\"",
+    "check-commit": "yarn lint && yarn check-format && yarn build && yarn test",
+    "check-publish": "test -e build/@jetstate/angular/package.json && ls -1d build/@jetstate/* | xargs -n 1 npm publish --dry-run",
+    "check-release": "yarn check-publish && standard-version --dry-run",
+    "release": "standard-version",
+    "publish-packages": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --access public",
     "dist-link": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} link",
     "dist-unlink": "ls -1d build/@jetstate/* | xargs -I {} yarn --cwd {} unlink",
-    "check-publish": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --dry-run",
-    "do-publish": "ls -1d build/@jetstate/* | xargs -n 1 npm publish --access public",
-    "##  NPM/Yarn hooks": "",
+    "--  NPM/Yarn hooks --": "",
     "version": "wsrun version --new-version ${npm_package_version}"
   }
 }
