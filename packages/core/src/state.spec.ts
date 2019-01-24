@@ -86,9 +86,10 @@ describe('State', () => {
             const changes: number[] = [];
             const subscription = state.listen(it => it.foo, value => changes.push(value));
             state.patch({foo: 2});
-            subscription.unsubscribe();
             state.patch({foo: 3});
-            expect(changes).toEqual([1, 2]);
+            subscription.unsubscribe();
+            state.patch({foo: 4});
+            expect(changes).toEqual([1, 2, 3]);
         });
     });
 
@@ -112,9 +113,10 @@ describe('State', () => {
             const changes: number[] = [];
             const subscription = state.listenChanges(it => it.foo, value => changes.push(value));
             state.patch({foo: 2});
-            subscription.unsubscribe();
             state.patch({foo: 3});
-            expect(changes).toEqual([2]);
+            subscription.unsubscribe();
+            state.patch({foo: 4});
+            expect(changes).toEqual([2, 3]);
         });
     });
 

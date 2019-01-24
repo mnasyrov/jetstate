@@ -5,7 +5,6 @@ import {StateValueSelector} from './stateValueSelector';
 
 export class State<Model extends object> {
     private readonly emitter: Emitter<Readonly<Model>> = new Emitter<Readonly<Model>>();
-    private readonly selectedValues = new WeakMap<StateValueSelector<Model, any>, any>();
     private state: Readonly<Model>;
     private isStateUpdating: boolean = false;
     private pendingResetState: Readonly<Model> | undefined = undefined;
@@ -43,11 +42,11 @@ export class State<Model extends object> {
     }
 
     listen<V>(selector: StateValueSelector<Model, V>, consumer: Consumer<V>): Subscription {
-        return this.bindSelector(selector, consumer, false);
+        return this.bindSelector(selector, consumer, true);
     }
 
     listenChanges<V>(selector: StateValueSelector<Model, V>, consumer: Consumer<V>): Subscription {
-        return this.bindSelector(selector, consumer, true);
+        return this.bindSelector(selector, consumer, false);
     }
 
     private applyPendingStates() {
@@ -81,22 +80,23 @@ export class State<Model extends object> {
     private bindSelector<V>(
         selector: StateValueSelector<Model, V>,
         consumer: Consumer<V>,
-        skipCurrent: boolean
+        pushCurrent: boolean
     ): Subscription {
-        const stateHandler: Consumer<Model> = state => {
-            const currentValue = this.selectedValues.get(selector);
+        let currentValue: V;
+
+        const subscription = this.emitter.subscribe((state: Model) => {
             const value = selector(state);
             if (value !== currentValue) {
-                this.selectedValues.set(selector, value);
+                currentValue = value;
                 consumer(value);
             }
-        };
-        const subscription = this.emitter.subscribe(stateHandler);
+        });
 
-        // Pass a current state to the consumer of the selected value;
-        if (!skipCurrent) {
+        // Push a current state to the consumer of the selected value;
+        if (pushCurrent) {
             try {
-                stateHandler(this.state);
+                currentValue = selector(this.state);
+                consumer(currentValue);
             } catch (error) {
                 subscription.unsubscribe();
                 throw error;
