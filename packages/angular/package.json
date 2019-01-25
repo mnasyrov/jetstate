@@ -29,7 +29,7 @@
     "@angular/core": ">=5.0.0 <8.0.0"
   },
   "dependencies": {
-    "@jetstate/core": "0.0.10",
+    "@jetstate/core": "0.0.11",
     "tslib": "^1.9.0"
   },
   "sideEffects": false,
@@ -46,6 +46,7 @@
     ]
   },
   "scripts": {
-    "build": "ng-packagr -p package.json"
+    "build": "ng-packagr -p package.json",
+    "version": "npe 'dependencies.@jetstate/core' ${npm_package_version}"
   }
 }

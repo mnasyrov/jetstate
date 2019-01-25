@@ -114,8 +114,7 @@ yarn check-release
 yarn release
 git push --follow-tags origin master
 
-yarn dist-build
-yarn check-publish
+yarn dist-build && yarn check-publish
 npm run publish-packages
 ```
 

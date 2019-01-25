@@ -9,7 +9,7 @@
     "@angular/forms": "7.1.4",
     "@angular/platform-browser": "7.1.4",
     "@angular/platform-browser-dynamic": "7.1.4",
-    "@jetstate/angular": "0.0.10",
+    "@jetstate/angular": "0.0.11",
     "rxjs": "6.3.3",
     "zone.js": "0.8.26"
   },
@@ -28,6 +28,7 @@
     "clean": "rm -rf build dist",
     "build": "webpack --mode production --devtool source-map",
     "test": "jest",
-    "serve-dist": "npx serve dist -l tcp://127.0.0.1"
+    "serve-dist": "npx serve dist -l tcp://127.0.0.1",
+    "version": "npe 'dependencies.@jetstate/angular' ${npm_package_version}"
   }
 }
