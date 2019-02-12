@@ -1,13 +1,20 @@
-import {StateDescriptor} from '@jetstate/core';
-
 // tslint:disable:ban-types
 
-const JET_STATE_DESCRIPTOR = Symbol('JET_STATE_DESCRIPTOR');
+const JETSTATE_KEY = Symbol('JETSTATE_KEY');
+const JETSTATE_DEFAULTS = Symbol('JETSTATE_DEFAULTS');
 
-export function defineJetStateDescriptor<T>(stateConstructor: Function, descriptor: StateDescriptor<any>) {
-    (stateConstructor as any)[JET_STATE_DESCRIPTOR] = descriptor;
+export function defineJetStateKey<T>(stateConstructor: Function, stateKey: string) {
+    (stateConstructor as any)[JETSTATE_KEY] = stateKey;
 }
 
-export function getJetStateDescriptor(stateConstructor: Function): StateDescriptor<any> | undefined {
-    return (stateConstructor as any)[JET_STATE_DESCRIPTOR];
+export function getJetStateKey(stateConstructor: Function): string | undefined {
+    return (stateConstructor as any)[JETSTATE_DEFAULTS];
+}
+
+export function defineJetStateDefaults<T>(stateConstructor: Function, defaults: object) {
+    (stateConstructor as any)[JETSTATE_DEFAULTS] = defaults;
+}
+
+export function getJetStateDefaults(stateConstructor: Function): object | undefined {
+    return (stateConstructor as any)[JETSTATE_DEFAULTS];
 }

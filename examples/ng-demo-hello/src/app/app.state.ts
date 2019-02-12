@@ -1,11 +1,12 @@
-import {JetState, JetStateDescriptor} from '@jetstate/angular';
+import {JetState, JetStateDefaults, JetStateKey} from '@jetstate/angular';
 
 export interface AppStateModel {
     userName: Readonly<string>;
     isUpperCase: Readonly<boolean>;
 }
 
-@JetStateDescriptor<AppStateModel>('AppState', {
+@JetStateKey('AppState')
+@JetStateDefaults<AppStateModel>({
     userName: 'World',
     isUpperCase: false
 })
