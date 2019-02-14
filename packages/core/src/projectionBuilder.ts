@@ -7,6 +7,10 @@ export interface ProjectionBuilderShape {
     build<R>(merger: (...values: any[]) => R): Projection<R>;
 }
 
+export interface ProjectionBuilderShapeEmpty extends ProjectionBuilderShape {
+    from<V>(source: Projection<V>): ProjectionBuilderShape1<V>;
+}
+
 export interface ProjectionBuilderShape1<V1> extends ProjectionBuilderShape {
     from<V>(source: Projection<V>): ProjectionBuilderShape2<V1, V>;
 
@@ -68,6 +72,7 @@ export interface ProjectionBuilderShape10<V1, V2, V3, V4, V5, V6, V7, V8, V9, V1
 }
 
 export class ProjectionBuilder implements ProjectionBuilderShape {
+    static from(): ProjectionBuilderShapeEmpty;
     static from<V1>(s1: Projection<V1>): ProjectionBuilderShape1<V1>;
     static from<V1, V2>(s1: Projection<V1>, s2: Projection<V2>): ProjectionBuilderShape2<V1, V2>;
     static from<V1, V2, V3>(

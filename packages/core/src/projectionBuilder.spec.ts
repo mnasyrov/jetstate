@@ -15,6 +15,19 @@ describe('ProjectionBuilder', () => {
             expect(computed).toBeDefined();
             expect(computed.getValue()).toEqual(3);
         });
+
+        it('should keeps type information in case the `from()` is called without arguments', () => {
+            const state1 = new State({x: 1});
+            const state2 = new State({y: 2});
+
+            const computed = ProjectionBuilder.from()
+                .from(state1.pick(it => it.x))
+                .from(state2.pick(it => it.y))
+                .build((x, y) => x + y);
+
+            expect(computed).toBeDefined();
+            expect(computed.getValue()).toEqual(3);
+        });
     });
 
     describe('Computed projection', () => {

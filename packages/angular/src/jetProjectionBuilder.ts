@@ -8,6 +8,10 @@ export interface JetProjectionBuilderShape {
     build<R>(merger: (...values: any[]) => R): JetProjection<R>;
 }
 
+export interface JetProjectionBuilderShapeEmpty extends JetProjectionBuilderShape {
+    from<V>(source: Projection<V>): JetProjectionBuilderShape1<V>;
+}
+
 export interface JetProjectionBuilderShape1<V1> extends JetProjectionBuilderShape {
     from<V>(source: Projection<V>): JetProjectionBuilderShape2<V1, V>;
 
@@ -70,6 +74,7 @@ export interface JetProjectionBuilderShape10<V1, V2, V3, V4, V5, V6, V7, V8, V9,
 }
 
 export class JetProjectionBuilder implements JetProjectionBuilderShape {
+    static from(): JetProjectionBuilderShapeEmpty;
     static from<V1>(s1: Projection<V1>): JetProjectionBuilderShape1<V1>;
     static from<V1, V2>(s1: Projection<V1>, s2: Projection<V2>): JetProjectionBuilderShape2<V1, V2>;
     static from<V1, V2, V3>(
