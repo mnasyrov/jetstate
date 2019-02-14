@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.13"></a>
+## [0.0.13](https://github.com/mnasyrov/jetstate/compare/v0.0.12...v0.0.13) (2019-02-14)
+
+
+### Features
+
+* Experimental support of patching a state by changes from Angular's component. ([fd99ba4](https://github.com/mnasyrov/jetstate/commit/fd99ba4))
+* Introduced computable projections of state values (state compositions). ([167c533](https://github.com/mnasyrov/jetstate/commit/167c533))
+
+
+
 <a name="0.0.12"></a>
 ## [0.0.12](https://github.com/mnasyrov/jetstate/compare/v0.0.11...v0.0.12) (2019-01-25)
 
