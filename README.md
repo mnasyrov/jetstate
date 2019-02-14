@@ -110,8 +110,8 @@ Release (for maintainers):
 ```bash
 git checkout master; git pull origin master
 yarn check-commit
-yarn check-release
-yarn release
+yarn check-release [--release-as X.Y.Z]
+yarn release [--release-as X.Y.Z]
 git push --follow-tags origin master
 
 yarn dist-build && yarn check-publish
