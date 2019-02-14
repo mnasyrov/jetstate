@@ -1,9 +1,13 @@
+import {Projection} from './projection';
+import {ProjectionBuilder} from './projectionBuilder';
 import {Consumer} from './pubsub/consumer';
 import {Emitter} from './pubsub/emitter';
 import {Subscription} from './pubsub/subscription';
 import {StateValueSelector} from './stateValueSelector';
 
 export class State<Model extends object> {
+    static readonly compute = ProjectionBuilder.from;
+
     private readonly emitter: Emitter<Readonly<Model>> = new Emitter<Readonly<Model>>();
     private state: Readonly<Model>;
     private isStateUpdating: boolean = false;
@@ -42,11 +46,28 @@ export class State<Model extends object> {
     }
 
     listen<V>(selector: StateValueSelector<Model, V>, consumer: Consumer<V>): Subscription {
-        return this.bindSelector(selector, consumer, true);
+        return this.bindSelectorListener(selector, consumer, true);
     }
 
     listenChanges<V>(selector: StateValueSelector<Model, V>, consumer: Consumer<V>): Subscription {
-        return this.bindSelector(selector, consumer, false);
+        return this.bindSelectorListener(selector, consumer, false);
+    }
+
+    pick<V>(selector: StateValueSelector<Model, V>): Projection<V> {
+        const state = this;
+        return {
+            getValue(): V {
+                return state.getValue(selector);
+            },
+
+            listen(consumer: Consumer<V>) {
+                return state.listen(selector, consumer);
+            },
+
+            listenChanges(consumer: Consumer<V>) {
+                return state.listenChanges(selector, consumer);
+            }
+        };
     }
 
     private applyPendingStates() {
@@ -77,7 +98,7 @@ export class State<Model extends object> {
         }
     }
 
-    private bindSelector<V>(
+    private bindSelectorListener<V>(
         selector: StateValueSelector<Model, V>,
         consumer: Consumer<V>,
         pushCurrent: boolean

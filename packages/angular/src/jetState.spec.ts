@@ -44,4 +44,17 @@ describe('JetState', () => {
             expect(subValue2).toBe(3);
         });
     });
+
+    describe('static method create()', () => {
+        it('should return a new instance of JetState', () => {
+            const state = JetState.create();
+            expect(state).toBeDefined();
+        });
+
+        it('should set default values to the state', () => {
+            const state = JetState.create({foo: 1, bar: 'hello'});
+            expect(state.getValue(it => it.foo)).toBe(1);
+            expect(state.getValue(it => it.bar)).toBe('hello');
+        });
+    });
 });
