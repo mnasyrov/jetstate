@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.14"></a>
+## [0.0.14](https://github.com/mnasyrov/jetstate/compare/v0.0.13...v0.0.14) (2019-02-14)
+
+
+### Bug Fixes
+
+* Added missed declarations for `JetProjection` and `JetProjectionBuilder` to public API. ([f03de4b](https://github.com/mnasyrov/jetstate/commit/f03de4b))
+
+
+
 <a name="0.0.13"></a>
 ## [0.0.13](https://github.com/mnasyrov/jetstate/compare/v0.0.12...v0.0.13) (2019-02-14)
 
