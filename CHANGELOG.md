@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.16"></a>
+## [0.0.16](https://github.com/mnasyrov/jetstate/compare/v0.0.15...v0.0.16) (2019-02-25)
+
+
+### Bug Fixes
+
+* Fixed creation of mutable projections. ([c11a49c](https://github.com/mnasyrov/jetstate/commit/c11a49c))
+
+
+### Features
+
+* Introduced 'jet' angular pipe to bind projections to angular templates. ([9ce0d2c](https://github.com/mnasyrov/jetstate/commit/9ce0d2c))
+
+
+
 <a name="0.0.15"></a>
 ## [0.0.15](https://github.com/mnasyrov/jetstate/compare/v0.0.14...v0.0.15) (2019-02-25)
 
