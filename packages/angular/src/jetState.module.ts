@@ -1,11 +1,15 @@
 import {Inject, InjectionToken, Injector, ModuleWithProviders, NgModule} from '@angular/core';
 import {State} from '@jetstate/core';
 import {getJetStateDefaults, getJetStateKey} from './internal/metadata';
+import {JetPipe} from './jetPipe';
 import {JetStore} from './jetStore';
 
 type JetStateConstructor = new (defaults?: any) => object;
 
-@NgModule()
+@NgModule({
+    declarations: [JetPipe],
+    exports: [JetPipe]
+})
 export class JetStateModule {
     private static readonly STATES_TOKEN = new InjectionToken('JetStateModule.STATES_TOKEN');
     private static readonly ROOT_STORE_TOKEN = new InjectionToken('JetStateModule.ROOT_STORE_TOKEN');

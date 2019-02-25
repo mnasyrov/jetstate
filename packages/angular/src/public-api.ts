@@ -1,3 +1,4 @@
+export {JetPipe} from './jetPipe';
 export {JetProjectionBuilder} from './jetProjectionBuilder';
 export {JetProjection} from './jetProjection';
 export {JetStateDefaults} from './jetStateDefaults.decorator';

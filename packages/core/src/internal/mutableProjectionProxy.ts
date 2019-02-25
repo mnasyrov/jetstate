@@ -1,9 +1,7 @@
 import {Consumer, MutableProjection, Projection, Subscription} from '../public-api';
 
 export class MutableProjectionProxy<V, R> implements MutableProjection<V> {
-    constructor(private readonly delegate: Projection<V>,
-                private readonly setter: (value: V) => R) {
-    }
+    constructor(private readonly delegate: Projection<V>, private readonly setter: (value: V) => R) {}
 
     get value(): V {
         return this.delegate.value;
