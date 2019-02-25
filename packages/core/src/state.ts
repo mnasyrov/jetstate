@@ -1,3 +1,4 @@
+import {MutableProjectionProxy} from './internal/mutableProjectionProxy';
 import {MutableProjection} from './mutableProjection';
 import {Projection} from './projection';
 import {ProjectionBuilder} from './projectionBuilder';
@@ -10,7 +11,7 @@ export class State<Model extends object> {
     static readonly compute = ProjectionBuilder.from;
 
     static mutable<V>(projection: Projection<V>, setter: (value: V) => any): MutableProjection<V> {
-        return {...projection, setValue: setter};
+        return new MutableProjectionProxy(projection, setter);
     }
 
     private readonly emitter: Emitter<Readonly<Model>> = new Emitter<Readonly<Model>>();
@@ -84,15 +85,12 @@ export class State<Model extends object> {
         patcher: (value: V) => Partial<Model> | undefined | void
     ): MutableProjection<V> {
         const projection = this.pick(selector);
-        return {
-            ...projection,
-            setValue: (value: V) => {
-                const newState = patcher(value);
-                if (newState) {
-                    this.patch(newState);
-                }
+        return new MutableProjectionProxy(projection, (value: V) => {
+            const newState = patcher(value);
+            if (newState) {
+                this.patch(newState);
             }
-        };
+        });
     }
 
     private applyPendingStates() {

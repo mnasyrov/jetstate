@@ -1,5 +1,6 @@
 import {SimpleChanges} from '@angular/core';
 import {StateValueSelector} from '@jetstate/core';
+import {MutableJetProjectionProxy} from './internal/mutableJetProjectionProxy';
 import {RxState} from './internal/rxState';
 import {JetProjection} from './jetProjection';
 import {JetProjectionBuilder} from './jetProjectionBuilder';
@@ -14,7 +15,7 @@ export class JetState<Model extends object> extends RxState<Model> {
     static readonly compute = JetProjectionBuilder.from;
 
     static mutable<V>(projection: JetProjection<V>, setter: (value: V) => any): MutableJetProjection<V> {
-        return {...projection, setValue: setter};
+        return new MutableJetProjectionProxy(projection, setter);
     }
 
     static create<Model extends object>(defaults?: Readonly<Model>): JetState<Model> {
@@ -38,15 +39,12 @@ export class JetState<Model extends object> extends RxState<Model> {
         patcher: (value: V) => Partial<Model> | undefined | void
     ): MutableJetProjection<V> {
         const projection = this.pick(selector);
-        return {
-            ...projection,
-            setValue: (value: V) => {
-                const newState = patcher(value);
-                if (newState) {
-                    this.patch(newState);
-                }
+        return new MutableJetProjectionProxy(projection, (value: V) => {
+            const newState = patcher(value);
+            if (newState) {
+                this.patch(newState);
             }
-        };
+        });
     }
 
     /** @experimental */
