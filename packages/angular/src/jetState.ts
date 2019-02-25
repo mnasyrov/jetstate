@@ -3,6 +3,7 @@ import {StateValueSelector} from '@jetstate/core';
 import {RxState} from './internal/rxState';
 import {JetProjection} from './jetProjection';
 import {JetProjectionBuilder} from './jetProjectionBuilder';
+import {MutableJetProjection} from './mutableJetProjection';
 
 /** @experimental */
 export type NgComponentInputMapper<Component, Model> = {
@@ -11,6 +12,10 @@ export type NgComponentInputMapper<Component, Model> = {
 
 export class JetState<Model extends object> extends RxState<Model> {
     static readonly compute = JetProjectionBuilder.from;
+
+    static mutable<V>(projection: JetProjection<V>, setter: (value: V) => any): MutableJetProjection<V> {
+        return {...projection, setValue: setter};
+    }
 
     static create<Model extends object>(defaults?: Readonly<Model>): JetState<Model> {
         const state = new JetState<Model>();
@@ -26,6 +31,22 @@ export class JetState<Model extends object> extends RxState<Model> {
 
     pick<V>(selector: StateValueSelector<Model, V>): JetProjection<V> {
         return super.pick(selector);
+    }
+
+    pickMutable<V>(
+        selector: StateValueSelector<Model, V>,
+        patcher: (value: V) => Partial<Model> | undefined | void
+    ): MutableJetProjection<V> {
+        const projection = this.pick(selector);
+        return {
+            ...projection,
+            setValue: (value: V) => {
+                const newState = patcher(value);
+                if (newState) {
+                    this.patch(newState);
+                }
+            }
+        };
     }
 
     /** @experimental */

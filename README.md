@@ -78,7 +78,7 @@ export class GreeterComponent {
     readonly message$: Observable<string>;
     
     constructor(private state: GreeterState) {
-        this.message$ = state.select(state => `Hello ${state.userName}!`); 
+        this.message$ = state.observe(state => `Hello ${state.userName}!`); 
     }
     
     changeUserName(value: string) {

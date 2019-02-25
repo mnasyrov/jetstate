@@ -7,7 +7,7 @@ export function mergeProjections<R>(merger: (...values: any[]) => R, ...sources:
     let lastResult: R;
 
     return {
-        getValue(): R {
+        get value(): R {
             return calculate();
         },
 
@@ -17,13 +17,17 @@ export function mergeProjections<R>(merger: (...values: any[]) => R, ...sources:
 
         listenChanges(consumer: Consumer<R>): Subscription {
             return bindListener(consumer, false);
+        },
+
+        map<T>(mapper: (value: R) => T): Projection<T> {
+            return mergeProjections<T>(mapper, this);
         }
     };
 
     function calculate(): R {
         let isSourceChanged: boolean = false;
         for (let i = 0; i < sources.length; i++) {
-            const sourceValue = sources[i].getValue();
+            const sourceValue = sources[i].value;
             if (sourceValues[i] !== sourceValue) {
                 sourceValues[i] = sourceValue;
                 isSourceChanged = true;

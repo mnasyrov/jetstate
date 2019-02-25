@@ -163,9 +163,30 @@ export class JetProjectionBuilder implements JetProjectionBuilderShape {
 
     build<R>(merger: (...values: any[]) => R): JetProjection<R> {
         const projection: Projection<R> = ProjectionBuilder.from(...this.sources).build(merger);
+        let value$: Observable<R>;
+        let changes$: Observable<R>;
+
         return {
-            getValue(): R {
-                return projection.getValue();
+            get value(): R {
+                return projection.value;
+            },
+
+            get value$(): Observable<R> {
+                if (!value$) {
+                    value$ = new Observable<R>(subscriber => {
+                        return this.listen(value => subscriber.next(value));
+                    });
+                }
+                return value$;
+            },
+
+            get changes$(): Observable<R> {
+                if (!changes$) {
+                    changes$ = new Observable<R>(subscriber => {
+                        return this.listenChanges(value => subscriber.next(value));
+                    });
+                }
+                return changes$;
             },
 
             listen(consumer: Consumer<R>): Subscription {
@@ -176,16 +197,8 @@ export class JetProjectionBuilder implements JetProjectionBuilderShape {
                 return projection.listenChanges(consumer);
             },
 
-            select(): Observable<R> {
-                return new Observable<R>(subscriber => {
-                    return this.listen(value => subscriber.next(value));
-                });
-            },
-
-            selectChanges(): Observable<R> {
-                return new Observable<R>(subscriber => {
-                    return this.listenChanges(value => subscriber.next(value));
-                });
+            map<T>(mapper: (value: R) => T): JetProjection<T> {
+                return JetProjectionBuilder.from<R>(this).build<T>(mapper);
             }
         };
     }

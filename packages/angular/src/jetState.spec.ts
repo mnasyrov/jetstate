@@ -1,11 +1,11 @@
 import {JetState} from './jetState';
 
 describe('JetState', () => {
-    describe('method select()', () => {
+    describe('method observe()', () => {
         it('should return an observable which passes a current value to each new subscription', async () => {
             const state = new JetState<{foo: number}>();
             state.reset({foo: 1});
-            const foo$ = state.select(it => it.foo);
+            const foo$ = state.observe(it => it.foo);
 
             let subValue1 = -1;
             foo$.subscribe(value => (subValue1 = value));
@@ -27,7 +27,7 @@ describe('JetState', () => {
         it('should return an observable which passes new changes to each subscription', async () => {
             const state = new JetState<{foo: number}>();
             state.reset({foo: 1});
-            const foo$ = state.selectChanges(it => it.foo);
+            const foo$ = state.observeChanges(it => it.foo);
 
             let subValue1 = -1;
             foo$.subscribe(value => (subValue1 = value));

@@ -31,10 +31,10 @@ export class AppComponent {
     readonly message$: Observable<string>;
 
     constructor(private readonly state: AppState, private readonly jetStore: JetStore) {
-        this.userName$ = state.select(current => current.userName);
-        this.isUpperCase$ = state.select(current => current.isUpperCase);
+        this.userName$ = state.observe(current => current.userName);
+        this.isUpperCase$ = state.observe(current => current.isUpperCase);
 
-        this.message$ = state.select(current => {
+        this.message$ = state.observe(current => {
             const value = `Hello ${current.userName}!`;
             return current.isUpperCase ? value.toUpperCase() : value;
         });

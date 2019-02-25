@@ -1,3 +1,4 @@
+import {MutableProjection} from './mutableProjection';
 import {Projection} from './projection';
 import {ProjectionBuilder} from './projectionBuilder';
 import {Consumer} from './pubsub/consumer';
@@ -7,6 +8,10 @@ import {StateValueSelector} from './stateValueSelector';
 
 export class State<Model extends object> {
     static readonly compute = ProjectionBuilder.from;
+
+    static mutable<V>(projection: Projection<V>, setter: (value: V) => any): MutableProjection<V> {
+        return {...projection, setValue: setter};
+    }
 
     private readonly emitter: Emitter<Readonly<Model>> = new Emitter<Readonly<Model>>();
     private state: Readonly<Model>;
@@ -56,7 +61,7 @@ export class State<Model extends object> {
     pick<V>(selector: StateValueSelector<Model, V>): Projection<V> {
         const state = this;
         return {
-            getValue(): V {
+            get value(): V {
                 return state.getValue(selector);
             },
 
@@ -66,6 +71,26 @@ export class State<Model extends object> {
 
             listenChanges(consumer: Consumer<V>) {
                 return state.listenChanges(selector, consumer);
+            },
+
+            map<T>(mapper: (value: V) => T): Projection<T> {
+                return ProjectionBuilder.from<V>(this).build<T>(mapper);
+            }
+        };
+    }
+
+    pickMutable<V>(
+        selector: StateValueSelector<Model, V>,
+        patcher: (value: V) => Partial<Model> | undefined | void
+    ): MutableProjection<V> {
+        const projection = this.pick(selector);
+        return {
+            ...projection,
+            setValue: (value: V) => {
+                const newState = patcher(value);
+                if (newState) {
+                    this.patch(newState);
+                }
             }
         };
     }

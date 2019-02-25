@@ -5,3 +5,4 @@ export {JetStateKey} from './jetStateKey.decorator';
 export {JetStateModule} from './jetState.module';
 export {JetState} from './jetState';
 export {JetStore} from './jetStore';
+export {MutableJetProjection} from './mutableJetProjection';

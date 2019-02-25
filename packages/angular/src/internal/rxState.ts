@@ -1,13 +1,35 @@
 import {Consumer, State, StateValueSelector} from '@jetstate/core';
 import {Observable} from 'rxjs';
+import {JetProjectionBuilder} from '../jetProjectionBuilder';
 import {RxProjection} from './rxProjection';
 
 export class RxState<Model extends object> extends State<Model> {
     pick<V>(selector: StateValueSelector<Model, V>): RxProjection<V> {
         const state = this;
+        let value$: Observable<V>;
+        let changes$: Observable<V>;
+
         return {
-            getValue(): V {
+            get value(): V {
                 return state.getValue(selector);
+            },
+
+            get value$(): Observable<V> {
+                if (!value$) {
+                    value$ = new Observable<V>(subscriber => {
+                        return this.listen(value => subscriber.next(value));
+                    });
+                }
+                return value$;
+            },
+
+            get changes$(): Observable<V> {
+                if (!changes$) {
+                    changes$ = new Observable<V>(subscriber => {
+                        return this.listenChanges(value => subscriber.next(value));
+                    });
+                }
+                return changes$;
             },
 
             listen(consumer: Consumer<V>) {
@@ -18,23 +40,19 @@ export class RxState<Model extends object> extends State<Model> {
                 return state.listenChanges(selector, consumer);
             },
 
-            select(): Observable<V> {
-                return state.select(selector);
-            },
-
-            selectChanges(): Observable<V> {
-                return state.selectChanges(selector);
+            map<T>(mapper: (value: V) => T): RxProjection<T> {
+                return JetProjectionBuilder.from<V>(this).build<T>(mapper);
             }
         };
     }
 
-    select<V>(selector: StateValueSelector<Model, V>): Observable<V> {
+    observe<V>(selector: StateValueSelector<Model, V>): Observable<V> {
         return new Observable<V>(subscriber => {
             return this.listen(selector, value => subscriber.next(value));
         });
     }
 
-    selectChanges<V>(selector: StateValueSelector<Model, V>): Observable<V> {
+    observeChanges<V>(selector: StateValueSelector<Model, V>): Observable<V> {
         return new Observable<V>(subscriber => {
             return this.listenChanges(selector, value => subscriber.next(value));
         });
