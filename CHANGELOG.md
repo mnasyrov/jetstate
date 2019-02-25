@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.15"></a>
+## [0.0.15](https://github.com/mnasyrov/jetstate/compare/v0.0.14...v0.0.15) (2019-02-25)
+
+
+### Bug Fixes
+
+* Fixed typings for empty `from()` factory method of `ProjectBuilder` and `JetProjectBuilder`. ([d7b7245](https://github.com/mnasyrov/jetstate/commit/d7b7245))
+
+
+### Features
+
+* Changed API of states and projections. New `Projection.map()` method. Introduced mutable projections. ([b055aa1](https://github.com/mnasyrov/jetstate/commit/b055aa1))
+
+
+
 <a name="0.0.14"></a>
 ## [0.0.14](https://github.com/mnasyrov/jetstate/compare/v0.0.13...v0.0.14) (2019-02-14)
 
