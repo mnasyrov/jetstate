@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.0.17](https://github.com/mnasyrov/jetstate/compare/v0.0.16...v0.0.17) (2019-04-18)
+
+
+### Features
+
+* Changed API of states and projections: separated RxState to @jetstate/rx package. ([002aef2](https://github.com/mnasyrov/jetstate/commit/002aef2))
+
+
+
 <a name="0.0.16"></a>
 ## [0.0.16](https://github.com/mnasyrov/jetstate/compare/v0.0.15...v0.0.16) (2019-02-25)
 

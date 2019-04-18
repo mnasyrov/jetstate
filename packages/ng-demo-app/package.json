@@ -1,7 +1,7 @@
 {
   "name": "@jetstate/ng-demo-app",
   "private": true,
-  "version": "0.0.16",
+  "version": "0.0.17",
   "dependencies": {
     "@angular/common": "7.2.13",
     "@angular/compiler": "7.2.13",
@@ -9,7 +9,7 @@
     "@angular/forms": "7.2.13",
     "@angular/platform-browser": "7.2.13",
     "@angular/platform-browser-dynamic": "7.2.13",
-    "@jetstate/angular": "0.0.16",
+    "@jetstate/angular": "0.0.17",
     "rxjs": "6.4.0",
     "zone.js": "0.8.26"
   },
