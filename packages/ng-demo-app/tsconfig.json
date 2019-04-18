@@ -16,13 +16,16 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@jetstate/angular": [
-        "../../packages/angular"
+        "../angular"
       ],
       "@jetstate/core": [
-        "../../packages/core"
+        "../core"
+      ],
+      "@jetstate/rx": [
+        "../rx"
       ]
     }
   }

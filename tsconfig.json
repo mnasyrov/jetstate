@@ -1,7 +1,6 @@
 {
   "include": [
-    "packages/*/src/**/*.ts",
-    "examples/*/src/**/*.ts"
+    "packages/*/src/**/*.ts"
   ],
   "compilerOptions": {
     "outDir": "build",

@@ -1,5 +1,5 @@
 {
-  "name": "@jetstate/angular",
+  "name": "@jetstate/rx",
   "version": "0.0.16",
   "license": "MIT",
   "author": {
@@ -20,16 +20,13 @@
     "store",
     "state",
     "cqrs",
-    "rxjs",
-    "angular",
-    "angular2",
-    "ngx"
+    "rxjs"
   ],
   "peerDependencies": {
-    "@angular/core": ">=5.0.0"
+    "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4"
   },
   "dependencies": {
-    "@jetstate/rx": "0.0.16",
+    "@jetstate/core": "0.0.16",
     "tslib": "^1.9.0"
   },
   "sideEffects": false,
@@ -37,17 +34,16 @@
     "lib": {
       "entryFile": "index.ts",
       "umdModuleIds": {
-        "@jetstate/core": "jetstate.core",
-        "@jetstate/rx": "jetstate.rx"
+        "@jetstate/core": "jetstate.core"
       }
     },
-    "dest": "../../build/@jetstate/angular",
+    "dest": "../../build/@jetstate/rx",
     "whitelistedNonPeerDependencies": [
-      "@jetstate/rx"
+      "@jetstate/core"
     ]
   },
   "scripts": {
     "build": "ng-packagr -p package.json",
-    "version": "npe 'dependencies.@jetstate/rx' ${npm_package_version}"
+    "version": "npe 'dependencies.@jetstate/core' ${npm_package_version}"
   }
 }

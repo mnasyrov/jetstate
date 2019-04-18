@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {JetStore} from '@jetstate/angular';
 import {Observable} from 'rxjs';
 import {AppState} from './app.state';
 
@@ -30,7 +29,7 @@ export class AppComponent {
     readonly isUpperCase$: Observable<boolean>;
     readonly message$: Observable<string>;
 
-    constructor(private readonly state: AppState, private readonly jetStore: JetStore) {
+    constructor(private readonly state: AppState) {
         this.userName$ = state.observe(current => current.userName);
         this.isUpperCase$ = state.observe(current => current.isUpperCase);
 

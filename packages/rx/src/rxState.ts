@@ -1,9 +1,17 @@
 import {Consumer, State, StateValueSelector} from '@jetstate/core';
 import {Observable} from 'rxjs';
-import {JetProjectionBuilder} from '../jetProjectionBuilder';
+import {MutableRxProjectionProxy} from './internal/mutableRxProjectionProxy';
+import {MutableRxProjection} from './mutableRxProjection';
 import {RxProjection} from './rxProjection';
+import {RxProjectionBuilder} from './rxProjectionBuilder';
 
 export class RxState<Model extends object> extends State<Model> {
+    static readonly compute = RxProjectionBuilder.from;
+
+    static mutable<V>(projection: RxProjection<V>, setter: (value: V) => any): MutableRxProjection<V> {
+        return new MutableRxProjectionProxy(projection, setter);
+    }
+
     pick<V>(selector: StateValueSelector<Model, V>): RxProjection<V> {
         const state = this;
         let value$: Observable<V>;
@@ -41,9 +49,22 @@ export class RxState<Model extends object> extends State<Model> {
             },
 
             map<T>(mapper: (value: V) => T): RxProjection<T> {
-                return JetProjectionBuilder.from<V>(this).build<T>(mapper);
+                return RxProjectionBuilder.from<V>(this).build<T>(mapper);
             }
         };
+    }
+
+    pickMutable<V>(
+        selector: StateValueSelector<Model, V>,
+        patcher: (value: V) => Partial<Model> | undefined | void
+    ): MutableRxProjection<V> {
+        const projection = this.pick(selector);
+        return new MutableRxProjectionProxy(projection, (value: V) => {
+            const newState = patcher(value);
+            if (newState) {
+                this.patch(newState);
+            }
+        });
     }
 
     observe<V>(selector: StateValueSelector<Model, V>): Observable<V> {

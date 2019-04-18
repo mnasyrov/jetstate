@@ -1,53 +1,19 @@
-import {SimpleChanges} from '@angular/core';
-import {StateValueSelector} from '@jetstate/core';
-import {MutableJetProjectionProxy} from './internal/mutableJetProjectionProxy';
-import {RxState} from './internal/rxState';
-import {JetProjection} from './jetProjection';
-import {JetProjectionBuilder} from './jetProjectionBuilder';
-import {MutableJetProjection} from './mutableJetProjection';
+import {Inject, InjectionToken, Optional, SimpleChanges} from '@angular/core';
+import {RxState} from '@jetstate/rx';
 
-/** @experimental */
 export type NgComponentInputMapper<Component, Model> = {
     [inputKey in keyof Component]?: (value: Component[inputKey]) => Partial<Readonly<Model>> | undefined
 };
 
+// This token must be never use outside.
+// It fixes errors during injection by Angular when it cannot resolve type of `defaults` parameter.
+const DEFAULTS_PRIVATE_TOKEN = new InjectionToken<any>('__DEFAULTS_PRIVATE_TOKEN__');
+
 export class JetState<Model extends object> extends RxState<Model> {
-    static readonly compute = JetProjectionBuilder.from;
-
-    static mutable<V>(projection: JetProjection<V>, setter: (value: V) => any): MutableJetProjection<V> {
-        return new MutableJetProjectionProxy(projection, setter);
+    constructor(@Optional() @Inject(DEFAULTS_PRIVATE_TOKEN) defaults?: Readonly<Model>) {
+        super(defaults);
     }
 
-    static create<Model extends object>(defaults?: Readonly<Model>): JetState<Model> {
-        const state = new JetState<Model>();
-        if (defaults) {
-            state.reset(defaults);
-        }
-        return state;
-    }
-
-    constructor() {
-        super();
-    }
-
-    pick<V>(selector: StateValueSelector<Model, V>): JetProjection<V> {
-        return super.pick(selector);
-    }
-
-    pickMutable<V>(
-        selector: StateValueSelector<Model, V>,
-        patcher: (value: V) => Partial<Model> | undefined | void
-    ): MutableJetProjection<V> {
-        const projection = this.pick(selector);
-        return new MutableJetProjectionProxy(projection, (value: V) => {
-            const newState = patcher(value);
-            if (newState) {
-                this.patch(newState);
-            }
-        });
-    }
-
-    /** @experimental */
     patchByNgChanges<Component>(changes: SimpleChanges, inputs: NgComponentInputMapper<Component, Model>) {
         let newState: Model | undefined;
         const inputKeys = Object.getOwnPropertyNames(inputs);

@@ -5,7 +5,7 @@
 
 module.exports = {
     preset: 'jest-preset-angular',
-    setupTestFrameworkScriptFile: 'jest-preset-angular/setupJest.js',
+    setupFilesAfterEnv: ['jest-preset-angular/setupJest.js'],
     roots: ['src'],
     globals: {
         'ts-jest': {

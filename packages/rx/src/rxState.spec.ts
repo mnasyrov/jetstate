@@ -1,9 +1,9 @@
-import {JetState} from './jetState';
+import {RxState} from './rxState';
 
-describe('JetState', () => {
+describe('RxState', () => {
     describe('method observe()', () => {
         it('should return an observable which passes a current value to each new subscription', async () => {
-            const state = new JetState<{foo: number}>();
+            const state = new RxState<{foo: number}>();
             state.reset({foo: 1});
             const foo$ = state.observe(it => it.foo);
 
@@ -25,7 +25,7 @@ describe('JetState', () => {
 
     describe('method selectChanges()', () => {
         it('should return an observable which passes new changes to each subscription', async () => {
-            const state = new JetState<{foo: number}>();
+            const state = new RxState<{foo: number}>();
             state.reset({foo: 1});
             const foo$ = state.observeChanges(it => it.foo);
 
@@ -42,19 +42,6 @@ describe('JetState', () => {
             state.patch({foo: 3});
             expect(subValue1).toBe(3);
             expect(subValue2).toBe(3);
-        });
-    });
-
-    describe('static method create()', () => {
-        it('should return a new instance of JetState', () => {
-            const state = new JetState();
-            expect(state).toBeDefined();
-        });
-
-        it('should set default values to the state', () => {
-            const state = new JetState({foo: 1, bar: 'hello'});
-            expect(state.getValue(it => it.foo)).toBe(1);
-            expect(state.getValue(it => it.bar)).toBe('hello');
         });
     });
 });
