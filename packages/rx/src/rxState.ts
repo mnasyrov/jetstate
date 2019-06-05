@@ -12,6 +12,14 @@ export class RxState<Model extends object> extends State<Model> {
         return new MutableRxProjectionProxy(projection, setter);
     }
 
+    private readonly _current$ = new Observable<Readonly<Model>>(subscriber => {
+        return this.subscribe(value => subscriber.next(value));
+    });
+
+    get current$(): Observable<Readonly<Model>> {
+        return this._current$;
+    }
+
     pick<V>(selector: StateValueSelector<Model, V>): RxProjection<V> {
         const state = this;
         let value$: Observable<V>;

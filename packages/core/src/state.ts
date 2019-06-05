@@ -51,6 +51,10 @@ export class State<Model extends object> {
         return selector(this.state);
     }
 
+    subscribe(consumer: Consumer<Readonly<Model>>): Subscription {
+        return this.emitter.subscribe((state: Model) => consumer(state));
+    }
+
     listen<V>(selector: StateValueSelector<Model, V>, consumer: Consumer<V>): Subscription {
         return this.bindSelectorListener(selector, consumer, true);
     }

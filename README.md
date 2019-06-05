@@ -33,16 +33,18 @@ yarn add @jetstate/angular
 Declare a state:
 
 ```typescript
-import {JetState, JetStateDefaults} from '@jetstate/angular';
+import {JetState} from '@jetstate/angular';
 
 export interface GreeterStateModel {
     userName: Readonly<string>;
 }
 
-@JetStateDefaults<GreeterStateModel>({
-    userName: 'World'
-})
 export class GreeterState extends JetState<GreeterStateModel> {
+    constructor() {
+        super({
+            userName: 'World'
+        })
+    }
 }
 ```
 
