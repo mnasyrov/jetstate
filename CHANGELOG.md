@@ -1,6 +1,25 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.0.18](https://github.com/mnasyrov/jetstate/compare/v0.0.17...v0.0.18) (2019-06-09)
+
+
+### refactor
+
+* Refactored API. Changed prettier formatting. ([6b70028](https://github.com/mnasyrov/jetstate/commit/6b70028))
+
+
+### BREAKING CHANGES
+
+* - Removed methods `listen()` and `map()` from `Projection` interface.
+- Replaced `ProjectionBuilder` by `mapProjection()` and `computeProjection()` functions.
+- Renamed `StateValueSelector` interface to `Selector`.
+- `State` implements `Projection` now, refactored its methods.
+- Removed `JetStateModule.forRoot()`, import `JetStateModule` instead.
+- And other changes.
+
+
 
 ## [0.0.17](https://github.com/mnasyrov/jetstate/compare/v0.0.16...v0.0.17) (2019-04-18)
 
