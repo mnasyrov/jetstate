@@ -21,6 +21,7 @@
       true,
       "spaces"
     ],
+    "max-classes-per-file": false,
     "no-duplicate-variable": true,
     "no-eval": true,
     "no-internal-module": true,

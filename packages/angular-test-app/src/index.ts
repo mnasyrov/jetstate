@@ -4,7 +4,7 @@ import 'zone.js';
 import {AppModule} from './app/app.module';
 
 if (process.env.NODE_ENV) {
-    enableProdMode();
+  enableProdMode();
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule);

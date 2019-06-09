@@ -1,5 +1,5 @@
 {
-  "name": "@jetstate/ng-demo-app",
+  "name": "@jetstate/angular-test-app",
   "private": true,
   "version": "0.0.17",
   "dependencies": {
