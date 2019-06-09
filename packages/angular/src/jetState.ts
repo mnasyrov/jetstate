@@ -4,7 +4,7 @@ import {RxState} from '@jetstate/rx';
 export type NgComponentInputMapper<Component, Model> = {
   [inputKey in keyof Component]?: (
     value: Component[inputKey]
-  ) => Partial<Readonly<Model>> | undefined
+  ) => Partial<Readonly<Model>> | undefined;
 };
 
 // This token must be never use outside.
