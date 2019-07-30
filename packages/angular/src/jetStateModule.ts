@@ -3,6 +3,6 @@ import {JetProjectionPipe} from './jetProjectionPipe';
 
 @NgModule({
   declarations: [JetProjectionPipe],
-  exports: [JetProjectionPipe]
+  exports: [JetProjectionPipe],
 })
 export class JetStateModule {}

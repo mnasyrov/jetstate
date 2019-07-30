@@ -78,14 +78,20 @@ describe('State', () => {
 
     it('should return a subscription for the attached listener', () => {
       const state = new State({foo: 1});
-      const subscription = state.selectChanges(() => undefined, () => undefined);
+      const subscription = state.selectChanges(
+        () => undefined,
+        () => undefined,
+      );
       expect(subscription).toBeDefined();
     });
 
     it('should return a subscription the listener which allow to unsubscribe it', () => {
       const state = new State({foo: 1});
       const changes: number[] = [];
-      const subscription = state.selectChanges(it => it.foo, value => changes.push(value));
+      const subscription = state.selectChanges(
+        it => it.foo,
+        value => changes.push(value),
+      );
       state.update({foo: 2});
       state.update({foo: 3});
       subscription.unsubscribe();
@@ -127,7 +133,7 @@ describe('State', () => {
         x => {
           state.reset({x: 1, y: x * x, z: 0});
           state.update({z: x * x * 10});
-        }
+        },
       );
       state.selectChanges(it => it.z, z => changes.push(z));
       state.update({x: 1});
@@ -168,7 +174,7 @@ describe('State', () => {
         x => {
           state.reset({x: 1, y: x * x, z: 0});
           state.update({z: x * x * 10});
-        }
+        },
       );
       state.selectChanges(it => it.z, z => changes.push(z));
       state.update({x: 2});

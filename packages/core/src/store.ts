@@ -22,8 +22,13 @@ export class Store {
     return false;
   }
 
-  getState<Model extends object>(stateKey: string, ownState?: boolean): State<Model> | undefined {
-    let state: State<Model> | undefined = this.states.get(stateKey) as State<Model>;
+  getState<Model extends object>(
+    stateKey: string,
+    ownState?: boolean,
+  ): State<Model> | undefined {
+    let state: State<Model> | undefined = this.states.get(stateKey) as State<
+      Model
+    >;
     if (!state && !ownState && this._parentStore) {
       state = this._parentStore.getState(stateKey);
     }

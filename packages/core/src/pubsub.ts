@@ -12,7 +12,7 @@ export interface Publisher<T> {
 }
 
 const EMPTY_SUBSCRIPTION: Subscription = {
-  unsubscribe: () => undefined
+  unsubscribe: () => undefined,
 };
 
 export class Emitter<T> implements Publisher<T> {

@@ -7,7 +7,7 @@ export interface MutableProjection<V> extends Projection<V> {
 
 export function createMutableProjection<V>(
   projection: Projection<V>,
-  setter: (value: V) => any
+  setter: (value: V) => any,
 ): MutableProjection<V> {
   return new MutableProjectionProxy(projection, setter);
 }
@@ -15,7 +15,7 @@ export function createMutableProjection<V>(
 class MutableProjectionProxy<V> implements MutableProjection<V> {
   constructor(
     private readonly delegate: Projection<V>,
-    private readonly setter: (value: V) => any
+    private readonly setter: (value: V) => any,
   ) {}
 
   get value(): V {

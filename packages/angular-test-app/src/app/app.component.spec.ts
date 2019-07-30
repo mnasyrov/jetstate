@@ -9,7 +9,7 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, JetStateModule],
-      declarations: [AppComponent]
+      declarations: [AppComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
@@ -52,6 +52,8 @@ describe('AppComponent', () => {
   it('should render title in a h1 tag', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('#message').textContent).toContain('Hello World!');
+    expect(compiled.querySelector('#message').textContent).toContain(
+      'Hello World!',
+    );
   });
 });

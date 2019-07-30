@@ -1,13 +1,18 @@
 import {Projection} from './projection';
 import {Consumer, Subscription} from './pubsub';
 
-export function map<V, R>(source: Projection<V>, factory: (value: V) => R): Projection<R> {
-  return merge({source}, ({source}) => factory(source));
+export function map<V, R>(
+  source: Projection<V>,
+  factory: (value: V) => R,
+): Projection<R> {
+  return merge({value: source}, ({value}) => factory(value));
 }
 
 export function merge<T, R>(
-  sources: {[P in keyof T]: Projection<T[P]>} & {[key: string]: Projection<any>},
-  factory: (values: T) => R
+  sources: {[P in keyof T]: Projection<T[P]>} & {
+    [key: string]: Projection<any>;
+  },
+  factory: (values: T) => R,
 ): Projection<R> {
   const sourceProps = Object.getOwnPropertyNames(sources);
   const projections = sourceProps.map(prop => sources[prop]);
@@ -50,14 +55,16 @@ export function merge<T, R>(
       }
     }
 
-    const sourceSubscriptions: Subscription[] = projections.map((source: Projection<any>) => {
-      return source.listenChanges(() => changeHandler());
-    });
+    const sourceSubscriptions: Subscription[] = projections.map(
+      (source: Projection<any>) => {
+        return source.listenChanges(() => changeHandler());
+      },
+    );
 
     return {
       unsubscribe() {
         sourceSubscriptions.forEach(sub => sub.unsubscribe());
-      }
+      },
     };
   }
 
@@ -68,6 +75,6 @@ export function merge<T, R>(
 
     listenChanges(consumer: Consumer<R>): Subscription {
       return bindListener(consumer);
-    }
+    },
   };
 }

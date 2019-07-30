@@ -3,8 +3,11 @@ import {Projection} from './projection';
 import {Consumer, Emitter, Subscription} from './pubsub';
 import {Selector} from './selector';
 
-export class State<Model extends object> implements Projection<Readonly<Model>> {
-  private readonly emitter: Emitter<Readonly<Model>> = new Emitter<Readonly<Model>>();
+export class State<Model extends object>
+  implements Projection<Readonly<Model>> {
+  private readonly emitter: Emitter<Readonly<Model>> = new Emitter<
+    Readonly<Model>
+  >();
   private state: Readonly<Model>;
   private isStateUpdating: boolean = false;
   private pendingResetState: Readonly<Model> | undefined = undefined;
@@ -50,23 +53,28 @@ export class State<Model extends object> implements Projection<Readonly<Model>> 
 
       listenChanges(consumer: Consumer<V>) {
         return state.selectChanges(selector, consumer);
-      }
+      },
     };
   }
 
   /** @experimental */
   mapMutable<V>(
     selector: Selector<Model, V>,
-    patcher: (value: V) => Partial<Model>
+    patcher: (value: V) => Partial<Model>,
   ): MutableProjection<V> {
-    return createMutableProjection(this.map(selector), value => this.update(patcher(value)));
+    return createMutableProjection(this.map(selector), value =>
+      this.update(patcher(value)),
+    );
   }
 
   select<V>(selector: Selector<Model, V>): V {
     return selector(this.state);
   }
 
-  selectChanges<V>(selector: Selector<Model, V>, consumer: Consumer<V>): Subscription {
+  selectChanges<V>(
+    selector: Selector<Model, V>,
+    consumer: Consumer<V>,
+  ): Subscription {
     let currentValue: V;
 
     const subscription = this.emitter.subscribe((state: Model) => {
@@ -87,7 +95,9 @@ export class State<Model extends object> implements Projection<Readonly<Model>> 
 
     this.isStateUpdating = true;
     try {
-      let nextState = this.pendingResetState ? this.pendingResetState : this.state;
+      let nextState = this.pendingResetState
+        ? this.pendingResetState
+        : this.state;
       if (this.pendingPatchState) {
         nextState = Object.assign({}, nextState, this.pendingPatchState);
       }

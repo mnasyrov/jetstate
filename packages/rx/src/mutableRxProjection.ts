@@ -1,23 +1,32 @@
-import {Consumer, MutableProjection, Projection, Subscription} from '@jetstate/core';
+import {
+  Consumer,
+  MutableProjection,
+  Projection,
+  Subscription,
+} from '@jetstate/core';
 import {Observable} from 'rxjs';
 import {createRxProjection, isRxProjection, RxProjection} from './rxProjection';
 
-export interface MutableRxProjection<V> extends MutableProjection<V>, RxProjection<V> {
+export interface MutableRxProjection<V>
+  extends MutableProjection<V>,
+    RxProjection<V> {
   setValue(value: V): void;
 }
 
 export function createMutableRxProjection<V>(
   projection: Projection<V>,
-  setter: (value: V) => any
+  setter: (value: V) => any,
 ): MutableRxProjection<V> {
-  const rxProjection = isRxProjection(projection) ? projection : createRxProjection(projection);
+  const rxProjection = isRxProjection(projection)
+    ? projection
+    : createRxProjection(projection);
   return new MutableRxProjectionProxy(rxProjection, setter);
 }
 
 class MutableRxProjectionProxy<V> implements MutableRxProjection<V> {
   constructor(
     private readonly delegate: RxProjection<V>,
-    private readonly setter: (value: V) => any
+    private readonly setter: (value: V) => any,
   ) {}
 
   get value(): V {

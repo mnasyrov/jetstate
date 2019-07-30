@@ -6,11 +6,15 @@ export interface RxProjection<V> extends Projection<V> {
   readonly changes$: Observable<V>;
 }
 
-export function isRxProjection<V>(projection: Projection<V>): projection is RxProjection<V> {
+export function isRxProjection<V>(
+  projection: Projection<V>,
+): projection is RxProjection<V> {
   return 'value$' in projection && 'changes$' in projection;
 }
 
-export function createRxProjection<V>(projection: Projection<V>): RxProjection<V> {
+export function createRxProjection<V>(
+  projection: Projection<V>,
+): RxProjection<V> {
   let value$: Observable<V>;
   let changes$: Observable<V>;
 
@@ -40,6 +44,6 @@ export function createRxProjection<V>(projection: Projection<V>): RxProjection<V
 
     listenChanges(consumer: Consumer<V>) {
       return projection.listenChanges(consumer);
-    }
+    },
   };
 }

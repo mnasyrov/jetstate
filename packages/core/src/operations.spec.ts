@@ -6,9 +6,10 @@ describe('merge()', () => {
     const state1 = new State({x: 1});
     const state2 = new State({y: 2});
 
-    const x = state1.map(it => it.x);
-    const y = state2.map(it => it.y);
-    const computed = merge({x, y}, ({x, y}) => x + y);
+    const computed = merge(
+      {x: state1.map(it => it.x), y: state2.map(it => it.y)},
+      ({x, y}) => x + y,
+    );
 
     expect(computed).toBeDefined();
     expect(computed.value).toEqual(3);
@@ -20,9 +21,10 @@ describe('merge()', () => {
         const state1 = new State({x: 1});
         const state2 = new State({y: 2});
 
-        const x = state1.map(it => it.x);
-        const y = state2.map(it => it.y);
-        const computed = merge({x, y}, ({x, y}) => x + y);
+        const computed = merge(
+          {x: state1.map(it => it.x), y: state2.map(it => it.y)},
+          ({x, y}) => x + y,
+        );
 
         expect(computed.value).toEqual(3);
 
@@ -37,11 +39,12 @@ describe('merge()', () => {
         const state1 = new State({x: 1});
         const state2 = new State({y: 2});
 
-        const x = state1.map(it => it.x);
-        const y = state2.map(it => it.y);
-        const computed = merge({x, y}, ({x, y}) => {
-          return {value: x + y};
-        });
+        const computed = merge(
+          {x: state1.map(it => it.x), y: state2.map(it => it.y)},
+          ({x, y}) => {
+            return {value: x + y};
+          },
+        );
 
         const lastResult = computed.value;
         expect(lastResult).toEqual({value: 3});

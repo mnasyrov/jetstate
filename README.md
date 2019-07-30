@@ -58,7 +58,7 @@ import {GreeterState} from './greeter.state';
 
 @NgModule({
     imports: [
-        JetStateModule.forRoot([GreeterState])
+        JetStateModule()
     ]
 })
 export class AppModule {}
@@ -69,18 +69,16 @@ Use the state:
 
 ```typescript
 import {Component} from '@angular/core';
-import {Observable} from 'rxjs';
 import {GreeterState} from './greeter.state';
 
 @Component({
     selector: 'greeter',
-    template: `{{message$ | async}}`
+    template: `{{message$ | jet}}`
 })
 export class GreeterComponent {
-    readonly message$: Observable<string>;
+    readonly message = this.state.map(state => `Hello ${state.userName}!`);
     
     constructor(private state: GreeterState) {
-        this.message$ = state.observe(state => `Hello ${state.userName}!`); 
     }
     
     changeUserName(value: string) {

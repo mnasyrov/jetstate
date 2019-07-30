@@ -27,19 +27,19 @@ import {merge} from '@jetstate/core';
     <p>
       Message: <span id="message">{{ message | jet }}</span>
     </p>
-  `
+  `,
 })
 export class AppComponent {
   private readonly state = new JetState({
     userName: 'World',
-    isUpperCase: false
+    isUpperCase: false,
   });
 
   readonly userName = this.state.map(it => it.userName);
   readonly isUpperCase = this.state.map(it => it.isUpperCase);
   readonly message = merge(
     {userName: this.userName, isUpperCase: this.isUpperCase},
-    ({userName, isUpperCase}) => createMessage(userName, isUpperCase)
+    ({userName, isUpperCase}) => createMessage(userName, isUpperCase),
   );
 
   setUserName(value: string) {
