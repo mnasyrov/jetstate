@@ -1,21 +1,24 @@
 import {Projection} from './projection';
 import {Consumer, Subscription} from './pubsub';
 
-export function mapProjection<V, R>(source: Projection<V>, mapper: (value: V) => R): Projection<R> {
-  return computeProjection<R>([source], () => mapper(source.value));
+export function map<V, R>(source: Projection<V>, factory: (value: V) => R): Projection<R> {
+  return merge({source}, ({source}) => factory(source));
 }
 
-export function computeProjection<R>(
-  triggers: Projection<any>[],
-  valueProvider: () => R
+export function merge<T, R>(
+  sources: {[P in keyof T]: Projection<T[P]>} & {[key: string]: Projection<any>},
+  factory: (values: T) => R
 ): Projection<R> {
-  const sourceValues: any[] = new Array(triggers.length);
+  const sourceProps = Object.getOwnPropertyNames(sources);
+  const projections = sourceProps.map(prop => sources[prop]);
+
+  const sourceValues: any[] = new Array(projections.length);
   let lastResult: R;
 
   function calculate(): R {
     let isSourceChanged: boolean = false;
-    for (let i = 0; i < triggers.length; i++) {
-      const sourceValue = triggers[i].value;
+    for (let i = 0; i < projections.length; i++) {
+      const sourceValue = projections[i].value;
       if (sourceValues[i] !== sourceValue) {
         sourceValues[i] = sourceValue;
         isSourceChanged = true;
@@ -24,7 +27,9 @@ export function computeProjection<R>(
 
     let result = lastResult;
     if (isSourceChanged) {
-      result = valueProvider();
+      const values: T & {[key: string]: any} = {} as any;
+      sourceProps.forEach(prop => (values[prop] = sources[prop].value));
+      result = factory(values);
     }
 
     const isChanged = lastResult !== result;
@@ -45,16 +50,15 @@ export function computeProjection<R>(
       }
     }
 
-    const sourceSubscriptions: Subscription[] = triggers.map((source: Projection<any>) => {
+    const sourceSubscriptions: Subscription[] = projections.map((source: Projection<any>) => {
       return source.listenChanges(() => changeHandler());
     });
-    const listenerSubscription: Subscription = {
+
+    return {
       unsubscribe() {
         sourceSubscriptions.forEach(sub => sub.unsubscribe());
       }
     };
-
-    return listenerSubscription;
   }
 
   return {

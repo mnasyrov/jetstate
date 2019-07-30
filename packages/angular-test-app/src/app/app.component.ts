@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {JetState} from '@jetstate/angular';
-import {computeProjection} from '@jetstate/core';
+import {merge} from '@jetstate/core';
 
 @Component({
   selector: 'app-root',
@@ -37,9 +37,10 @@ export class AppComponent {
 
   readonly userName = this.state.map(it => it.userName);
   readonly isUpperCase = this.state.map(it => it.isUpperCase);
-  readonly message = computeProjection([this.userName, this.isUpperCase], () => {
-    return createMessage(this.userName.value, this.isUpperCase.value);
-  });
+  readonly message = merge(
+    {userName: this.userName, isUpperCase: this.isUpperCase},
+    ({userName, isUpperCase}) => createMessage(userName, isUpperCase)
+  );
 
   setUserName(value: string) {
     this.state.update({userName: value});

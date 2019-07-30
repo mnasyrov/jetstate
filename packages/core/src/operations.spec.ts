@@ -1,20 +1,20 @@
-import {computeProjection} from './operations';
+import {merge} from './operations';
 import {State} from './state';
 
-describe('mergeProjections()', () => {
+describe('merge()', () => {
   it('should return a computed value', () => {
     const state1 = new State({x: 1});
     const state2 = new State({y: 2});
 
     const x = state1.map(it => it.x);
     const y = state2.map(it => it.y);
-    const computed = computeProjection([x, y], () => x.value + y.value);
+    const computed = merge({x, y}, ({x, y}) => x + y);
 
     expect(computed).toBeDefined();
     expect(computed.value).toEqual(3);
   });
 
-  describe('Computed projection', () => {
+  describe('Merged projection', () => {
     describe('get value()', () => {
       it('should recalculate a value in case a source is changed', () => {
         const state1 = new State({x: 1});
@@ -22,7 +22,7 @@ describe('mergeProjections()', () => {
 
         const x = state1.map(it => it.x);
         const y = state2.map(it => it.y);
-        const computed = computeProjection([x, y], () => x.value + y.value);
+        const computed = merge({x, y}, ({x, y}) => x + y);
 
         expect(computed.value).toEqual(3);
 
@@ -39,8 +39,8 @@ describe('mergeProjections()', () => {
 
         const x = state1.map(it => it.x);
         const y = state2.map(it => it.y);
-        const computed = computeProjection([x, y], () => {
-          return {value: x.value + y.value};
+        const computed = merge({x, y}, ({x, y}) => {
+          return {value: x + y};
         });
 
         const lastResult = computed.value;
