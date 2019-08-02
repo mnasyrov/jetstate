@@ -10,31 +10,31 @@ import {createRxProjection, isRxProjection, RxProjection} from './rxProjection';
 export interface MutableRxProjection<V>
   extends MutableProjection<V>,
     RxProjection<V> {
-  setValue(value: V): void;
+  update(value: V): void;
 }
 
 export function createMutableRxProjection<V>(
   projection: Projection<V>,
-  setter: (value: V) => any,
+  onUpdate: (value: V) => any,
 ): MutableRxProjection<V> {
   const rxProjection = isRxProjection(projection)
     ? projection
     : createRxProjection(projection);
-  return new MutableRxProjectionProxy(rxProjection, setter);
+  return new MutableRxProjectionProxy(rxProjection, onUpdate);
 }
 
 class MutableRxProjectionProxy<V> implements MutableRxProjection<V> {
   constructor(
     private readonly delegate: RxProjection<V>,
-    private readonly setter: (value: V) => any,
+    private readonly onUpdate: (value: V) => any,
   ) {}
 
-  get value(): V {
-    return this.delegate.value;
+  get current(): V {
+    return this.delegate.current;
   }
 
-  get value$(): Observable<V> {
-    return this.delegate.value$;
+  get current$(): Observable<V> {
+    return this.delegate.current$;
   }
 
   get changes$(): Observable<V> {
@@ -45,7 +45,7 @@ class MutableRxProjectionProxy<V> implements MutableRxProjection<V> {
     return this.delegate.listenChanges(consumer);
   }
 
-  setValue(value: V) {
-    this.setter(value);
+  update(value: V) {
+    this.onUpdate(value);
   }
 }

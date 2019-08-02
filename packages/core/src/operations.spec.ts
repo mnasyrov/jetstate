@@ -12,7 +12,7 @@ describe('merge()', () => {
     );
 
     expect(computed).toBeDefined();
-    expect(computed.value).toEqual(3);
+    expect(computed.current).toEqual(3);
   });
 
   describe('Merged projection', () => {
@@ -26,13 +26,13 @@ describe('merge()', () => {
           ({x, y}) => x + y,
         );
 
-        expect(computed.value).toEqual(3);
+        expect(computed.current).toEqual(3);
 
         state1.update({x: 4});
-        expect(computed.value).toEqual(6);
+        expect(computed.current).toEqual(6);
 
         state2.update({y: 10});
-        expect(computed.value).toEqual(14);
+        expect(computed.current).toEqual(14);
       });
 
       it('should return the last result in case nothing is changed', () => {
@@ -46,9 +46,9 @@ describe('merge()', () => {
           },
         );
 
-        const lastResult = computed.value;
+        const lastResult = computed.current;
         expect(lastResult).toEqual({value: 3});
-        expect(computed.value).toBe(lastResult);
+        expect(computed.current).toBe(lastResult);
       });
     });
   });

@@ -23,7 +23,7 @@ export function merge<T, R>(
   function calculate(): R {
     let isSourceChanged: boolean = false;
     for (let i = 0; i < projections.length; i++) {
-      const sourceValue = projections[i].value;
+      const sourceValue = projections[i].current;
       if (sourceValues[i] !== sourceValue) {
         sourceValues[i] = sourceValue;
         isSourceChanged = true;
@@ -33,7 +33,7 @@ export function merge<T, R>(
     let result = lastResult;
     if (isSourceChanged) {
       const values: T & {[key: string]: any} = {} as any;
-      sourceProps.forEach(prop => (values[prop] = sources[prop].value));
+      sourceProps.forEach(prop => (values[prop] = sources[prop].current));
       result = factory(values);
     }
 
@@ -69,7 +69,7 @@ export function merge<T, R>(
   }
 
   return {
-    get value(): R {
+    get current(): R {
       return calculate();
     },
 

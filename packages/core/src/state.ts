@@ -17,7 +17,7 @@ export class State<Model extends object>
     this.state = Object.assign({}, defaults) as Model;
   }
 
-  get value(): Readonly<Model> {
+  get current(): Readonly<Model> {
     return this.state;
   }
 
@@ -47,7 +47,7 @@ export class State<Model extends object>
   map<V>(selector: Selector<Model, V>): Projection<V> {
     const state = this;
     return {
-      get value(): V {
+      get current(): V {
         return state.select(selector);
       },
 

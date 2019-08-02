@@ -2,35 +2,35 @@ import {Consumer, Projection} from '@jetstate/core';
 import {Observable} from 'rxjs';
 
 export interface RxProjection<V> extends Projection<V> {
-  readonly value$: Observable<V>;
+  readonly current$: Observable<V>;
   readonly changes$: Observable<V>;
 }
 
 export function isRxProjection<V>(
   projection: Projection<V>,
 ): projection is RxProjection<V> {
-  return 'value$' in projection && 'changes$' in projection;
+  return 'current$' in projection && 'changes$' in projection;
 }
 
 export function createRxProjection<V>(
   projection: Projection<V>,
 ): RxProjection<V> {
-  let value$: Observable<V>;
+  let current$: Observable<V>;
   let changes$: Observable<V>;
 
   return {
-    get value(): V {
-      return projection.value;
+    get current(): V {
+      return projection.current;
     },
 
-    get value$(): Observable<V> {
-      if (!value$) {
-        value$ = new Observable<V>(subscriber => {
-          subscriber.next(projection.value);
+    get current$(): Observable<V> {
+      if (!current$) {
+        current$ = new Observable<V>(subscriber => {
+          subscriber.next(projection.current);
           return projection.listenChanges(value => subscriber.next(value));
         });
       }
-      return value$;
+      return current$;
     },
 
     get changes$(): Observable<V> {

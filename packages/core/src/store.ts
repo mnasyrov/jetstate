@@ -50,7 +50,7 @@ export class Store {
       data = parentStore.snapshot(withParent);
     }
     this.states.forEach((state, key) => {
-      data[key] = state.value;
+      data[key] = state.current;
     });
     return data;
   }

@@ -31,6 +31,6 @@ export class JetProjectionPipe implements OnDestroy, PipeTransform {
       });
     }
 
-    return projection.value;
+    return projection.current;
   }
 }

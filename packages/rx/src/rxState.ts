@@ -10,8 +10,8 @@ export class RxState<Model extends object> extends State<Model>
   implements RxProjection<Readonly<Model>> {
   private readonly stateProjection = createRxProjection(this);
 
-  get value$(): Observable<Readonly<Model>> {
-    return this.stateProjection.value$;
+  get current$(): Observable<Readonly<Model>> {
+    return this.stateProjection.current$;
   }
 
   get changes$(): Observable<Readonly<Model>> {
