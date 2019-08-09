@@ -3,18 +3,19 @@
 // * https://kulshekhar.github.io/ts-jest/user/config/
 
 module.exports = {
-    preset: 'ts-jest',
-    coverageDirectory: 'build/coverage',
-    roots: [
-        '<rootDir>/packages/core/src',
-        '<rootDir>/packages/angular/src'
-    ],
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    testMatch: [
-        '**/*.test.+(ts|tsx|js|jsx)',
-        '**/*.spec.+(ts|tsx|js|jsx)'
-    ],
-    transform: {
-        '^.+\\.(ts|tsx)$': 'ts-jest'
-    }
+  preset: 'ts-jest/presets/default',
+  coverageDirectory: 'build/coverage',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testMatch: ['**/src/**/*.{test,spec}.(ts|tsx|js|jsx)'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': 'ts-jest',
+  },
+  globals: {
+    'ts-jest': {
+      tsConfig: {
+        allowJs: true,
+        module: 'commonjs',
+      },
+    },
+  },
 };

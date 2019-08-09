@@ -1,20 +1,15 @@
 {
-  "include": [
-    "packages/*/src/**/*.ts"
-  ],
   "compilerOptions": {
     "outDir": "build",
     "target": "es6",
     "module": "es6",
     "moduleResolution": "node",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "strict": true,
     "sourceMap": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "importHelpers": true
   }
 }

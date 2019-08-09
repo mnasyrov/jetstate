@@ -17,21 +17,17 @@
   },
   "keywords": [
     "state-management",
-    "store",
     "state",
     "cqrs"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "tslib": "^1.9.0"
   },
   "sideEffects": false,
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    },
-    "dest": "../../build/@jetstate/core"
-  },
   "scripts": {
-    "build": "ng-packagr -p package.json"
+    "clean": "rm -rf dist",
+    "build": "tsc"
   }
 }

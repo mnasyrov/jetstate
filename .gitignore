@@ -2,6 +2,7 @@
 
 # Build output
 /build
+/packages/*/dist
 
 # Dependencies
 node_modules

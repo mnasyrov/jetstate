@@ -17,14 +17,14 @@
   },
   "keywords": [
     "state-management",
-    "store",
     "state",
     "cqrs",
     "rxjs",
     "angular",
-    "angular2",
     "ngx"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "peerDependencies": {
     "@angular/core": ">=5.0.0"
   },
@@ -33,21 +33,9 @@
     "tslib": "^1.9.0"
   },
   "sideEffects": false,
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts",
-      "umdModuleIds": {
-        "@jetstate/core": "jetstate.core",
-        "@jetstate/rx": "jetstate.rx"
-      }
-    },
-    "dest": "../../build/@jetstate/angular",
-    "whitelistedNonPeerDependencies": [
-      "@jetstate/rx"
-    ]
-  },
   "scripts": {
-    "build": "ng-packagr -p package.json",
+    "clean": "rm -rf dist",
+    "build": "tsc",
     "version": "npe 'dependencies.@jetstate/rx' ${npm_package_version}"
   }
 }
