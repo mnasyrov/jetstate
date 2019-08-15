@@ -3,6 +3,7 @@
   "exclude": ["./index.ts", "dist"],
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "lib": ["es2017", "dom"]
   }
 }

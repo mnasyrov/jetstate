@@ -25,17 +25,23 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "peerDependencies": {
-    "@angular/core": ">=5.0.0"
-  },
   "dependencies": {
     "@jetstate/rx": "0.0.21",
     "tslib": "^1.9.0"
   },
+  "peerDependencies": {
+    "@angular/core": ">=5.0.0"
+  },
+  "devDependencies": {
+    "@angular/compiler": "8.0.0",
+    "@angular/compiler-cli": "8.0.0",
+    "@angular/core": "8.0.0",
+    "zone.js": "0.9.1"
+  },
   "sideEffects": false,
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc",
+    "build": "ngc",
     "version": "npe 'dependencies.@jetstate/rx' ${npm_package_version}"
   }
 }
