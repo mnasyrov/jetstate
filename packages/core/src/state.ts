@@ -1,4 +1,3 @@
-import {createMutableProjection, MutableProjection} from './mutableProjection';
 import {Projection} from './projection';
 import {Consumer, Emitter, Subscription} from './pubsub';
 import {Selector} from './selector';
@@ -55,16 +54,6 @@ export class State<Model extends object>
         return state.selectChanges(selector, consumer);
       },
     };
-  }
-
-  /** @experimental */
-  mapMutable<V>(
-    selector: Selector<Model, V>,
-    patcher: (value: V) => Partial<Model>,
-  ): MutableProjection<V> {
-    return createMutableProjection(this.map(selector), value =>
-      this.update(patcher(value)),
-    );
   }
 
   select<V>(selector: Selector<Model, V>): V {

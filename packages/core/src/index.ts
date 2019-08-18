@@ -1,4 +1,3 @@
-export * from './mutableProjection';
 export * from './operations';
 export * from './projection';
 export * from './pubsub';

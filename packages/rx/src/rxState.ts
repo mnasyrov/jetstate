@@ -1,9 +1,5 @@
 import {Selector, State} from '@jetstate/core';
 import {Observable} from 'rxjs';
-import {
-  createMutableRxProjection,
-  MutableRxProjection,
-} from './mutableRxProjection';
 import {createRxProjection, RxProjection} from './rxProjection';
 
 export class RxState<Model extends object> extends State<Model>
@@ -20,15 +16,5 @@ export class RxState<Model extends object> extends State<Model>
 
   map<V>(selector: Selector<Model, V>): RxProjection<V> {
     return createRxProjection(super.map(selector));
-  }
-
-  /** @experimental */
-  mapMutable<V>(
-    selector: Selector<Model, V>,
-    patcher: (value: V) => Partial<Model>,
-  ): MutableRxProjection<V> {
-    return createMutableRxProjection(this.map(selector), value =>
-      this.update(patcher(value)),
-    );
   }
 }
