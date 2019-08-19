@@ -6,12 +6,6 @@ export interface RxProjection<V> extends Projection<V> {
   readonly changes$: Observable<V>;
 }
 
-export function isRxProjection<V>(
-  projection: Projection<V>,
-): projection is RxProjection<V> {
-  return 'current$' in projection && 'changes$' in projection;
-}
-
 export function createRxProjection<V>(
   projection: Projection<V>,
 ): RxProjection<V> {
