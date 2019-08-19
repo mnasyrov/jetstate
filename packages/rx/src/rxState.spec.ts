@@ -5,7 +5,7 @@ describe('RxState', () => {
     it('should return an observable which passes a current value to each new subscription', async () => {
       const state = new RxState<{foo: number}>();
       state.reset({foo: 1});
-      const foo$ = state.map(it => it.foo).current$;
+      const foo$ = state.pick(it => it.foo).current$;
 
       let subValue1 = -1;
       foo$.subscribe(value => (subValue1 = value));
@@ -23,11 +23,11 @@ describe('RxState', () => {
     });
   });
 
-  describe('method selectChanges()', () => {
+  describe('method pick()', () => {
     it('should return an observable which passes new changes to each subscription', async () => {
       const state = new RxState<{foo: number}>();
       state.reset({foo: 1});
-      const foo$ = state.map(it => it.foo).changes$;
+      const foo$ = state.pick(it => it.foo).changes$;
 
       let subValue1 = -1;
       foo$.subscribe(value => (subValue1 = value));

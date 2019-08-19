@@ -26,7 +26,7 @@ export class JetProjectionPipe implements OnDestroy, PipeTransform {
         this._subscription.unsubscribe();
       }
       this._projection = projection;
-      this._subscription = projection.listenChanges(() => {
+      this._subscription = projection.subscribe(() => {
         this.changeDetectorRef.markForCheck();
       });
     }

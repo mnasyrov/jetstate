@@ -67,31 +67,29 @@ describe('State', () => {
     });
   });
 
-  describe('method selectChanges()', () => {
+  describe('method pick().subscribe()', () => {
     it('should attach a listener for changes of a selected state value', () => {
       const state = new State({foo: 1});
       const changes: number[] = [];
-      state.selectChanges(it => it.foo, value => changes.push(value));
+      state.pick(it => it.foo).subscribe(value => changes.push(value));
       state.update({foo: 2});
       expect(changes).toEqual([2]);
     });
 
     it('should return a subscription for the attached listener', () => {
       const state = new State({foo: 1});
-      const subscription = state.selectChanges(
-        () => undefined,
-        () => undefined,
-      );
+      const subscription = state
+        .pick(() => undefined)
+        .subscribe(() => undefined);
       expect(subscription).toBeDefined();
     });
 
     it('should return a subscription the listener which allow to unsubscribe it', () => {
       const state = new State({foo: 1});
       const changes: number[] = [];
-      const subscription = state.selectChanges(
-        it => it.foo,
-        value => changes.push(value),
-      );
+      const subscription = state
+        .pick(it => it.foo)
+        .subscribe(value => changes.push(value));
       state.update({foo: 2});
       state.update({foo: 3});
       subscription.unsubscribe();
@@ -104,7 +102,7 @@ describe('State', () => {
     it('should trigger a listener in case a selected value was changed', () => {
       const state = new State({foo: 1, bar: 0});
       const changes: number[] = [];
-      state.selectChanges(it => it.foo, value => changes.push(value));
+      state.pick(it => it.foo).subscribe(value => changes.push(value));
       state.update({foo: 1});
       state.update({foo: 2});
       state.update({bar: 42});
@@ -116,9 +114,9 @@ describe('State', () => {
     it('should keeps pending state patches during applying a current state updates', () => {
       const state = new State({x: 0, y: 0, z: 0});
       const changes: number[] = [];
-      state.selectChanges(it => it.x, x => state.update({y: x * x}));
-      state.selectChanges(it => it.y, y => state.update({z: y * 10}));
-      state.selectChanges(it => it.z, z => changes.push(z));
+      state.pick(it => it.x).subscribe(x => state.update({y: x * x}));
+      state.pick(it => it.y).subscribe(y => state.update({z: y * 10}));
+      state.pick(it => it.z).subscribe(z => changes.push(z));
       state.update({x: 1});
       state.update({x: 2});
       state.update({x: 3});
@@ -128,14 +126,13 @@ describe('State', () => {
     it('should keeps pending state resets during applying a current state updates', () => {
       const state = new State({x: 0, y: 0, z: 0});
       const changes: number[] = [];
-      state.selectChanges(
-        it => it.x,
-        x => {
+      state
+        .pick(it => it.x)
+        .subscribe(x => {
           state.reset({x: 1, y: x * x, z: 0});
           state.update({z: x * x * 10});
-        },
-      );
-      state.selectChanges(it => it.z, z => changes.push(z));
+        });
+      state.pick(it => it.z).subscribe(z => changes.push(z));
       state.update({x: 1});
       state.update({x: 2});
       state.update({x: 3});
@@ -147,7 +144,7 @@ describe('State', () => {
     it('should trigger a change listener in case a selected value was changed', () => {
       const state = new State({foo: 1, bar: 0});
       const changes: number[] = [];
-      state.selectChanges(it => it.foo, value => changes.push(value));
+      state.pick(it => it.foo).subscribe(value => changes.push(value));
       state.update({foo: 2});
       state.update({bar: 42});
       state.update({foo: 2});
@@ -158,9 +155,9 @@ describe('State', () => {
     it('should keeps pending state patches during applying a current state updates', () => {
       const state = new State({x: 1, y: 0, z: 0});
       const changes: number[] = [];
-      state.selectChanges(it => it.x, x => state.update({y: x * x}));
-      state.selectChanges(it => it.y, y => state.update({z: y * 10}));
-      state.selectChanges(it => it.z, z => changes.push(z));
+      state.pick(it => it.x).subscribe(x => state.update({y: x * x}));
+      state.pick(it => it.y).subscribe(y => state.update({z: y * 10}));
+      state.pick(it => it.z).subscribe(z => changes.push(z));
       state.update({x: 2});
       state.update({x: 3});
       expect(changes).toEqual([0, 40, 90]);
@@ -169,14 +166,13 @@ describe('State', () => {
     it('should keeps pending state resets during applying a current state updates', () => {
       const state = new State({x: 1, y: 0, z: 0});
       const changes: number[] = [];
-      state.selectChanges(
-        it => it.x,
-        x => {
+      state
+        .pick(it => it.x)
+        .subscribe(x => {
           state.reset({x: 1, y: x * x, z: 0});
           state.update({z: x * x * 10});
-        },
-      );
-      state.selectChanges(it => it.z, z => changes.push(z));
+        });
+      state.pick(it => it.z).subscribe(z => changes.push(z));
       state.update({x: 2});
       state.update({x: 3});
       expect(changes).toEqual([0, 40, 10, 90, 10]);

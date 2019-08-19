@@ -1,6 +1,9 @@
 import {Projection} from './projection';
 import {Consumer, Emitter, Subscription} from './pubsub';
-import {Selector} from './selector';
+
+export type Selector<Model extends object, Value> = (
+  state: Readonly<Model>,
+) => Value;
 
 export class State<Model extends object>
   implements Projection<Readonly<Model>> {
@@ -20,8 +23,8 @@ export class State<Model extends object>
     return this.state;
   }
 
-  listenChanges(consumer: Consumer<Readonly<Model>>): Subscription {
-    return this.emitter.subscribe((state: Model) => consumer(state));
+  subscribe(subscriber: Consumer<Readonly<Model>>): Subscription {
+    return this.emitter.subscribe((state: Model) => subscriber(state));
   }
 
   reset(state: Readonly<Model>) {
@@ -43,38 +46,12 @@ export class State<Model extends object>
     this.applyPendingStates();
   }
 
-  map<V>(selector: Selector<Model, V>): Projection<V> {
-    const state = this;
-    return {
-      get current(): V {
-        return state.select(selector);
-      },
-
-      listenChanges(consumer: Consumer<V>) {
-        return state.selectChanges(selector, consumer);
-      },
-    };
-  }
-
-  select<V>(selector: Selector<Model, V>): V {
+  getValue<V>(selector: Selector<Model, V>): V {
     return selector(this.state);
   }
 
-  selectChanges<V>(
-    selector: Selector<Model, V>,
-    consumer: Consumer<V>,
-  ): Subscription {
-    let currentValue: V;
-
-    const subscription = this.emitter.subscribe((state: Model) => {
-      const value = selector(state);
-      if (value !== currentValue) {
-        currentValue = value;
-        consumer(value);
-      }
-    });
-
-    return subscription;
+  pick<V>(selector: Selector<Model, V>): Projection<V> {
+    return createProjection(this, selector);
   }
 
   private applyPendingStates() {
@@ -106,4 +83,27 @@ export class State<Model extends object>
       this.applyPendingStates();
     }
   }
+}
+
+function createProjection<Model extends object, V>(
+  state: State<Model>,
+  selector: Selector<Model, V>,
+): Projection<V> {
+  return {
+    get current(): V {
+      return state.getValue(selector);
+    },
+
+    subscribe(subscriber: Consumer<V>): Subscription {
+      let currentValue: V;
+
+      return state.subscribe((values: Model) => {
+        const value = selector(values);
+        if (value !== currentValue) {
+          currentValue = value;
+          subscriber(value);
+        }
+      });
+    },
+  };
 }

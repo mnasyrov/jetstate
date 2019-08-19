@@ -57,7 +57,7 @@ export function merge<T, R>(
 
     const sourceSubscriptions: Subscription[] = projections.map(
       (source: Projection<any>) => {
-        return source.listenChanges(() => changeHandler());
+        return source.subscribe(() => changeHandler());
       },
     );
 
@@ -73,7 +73,7 @@ export function merge<T, R>(
       return calculate();
     },
 
-    listenChanges(consumer: Consumer<R>): Subscription {
+    subscribe(consumer: Consumer<R>): Subscription {
       return bindListener(consumer);
     },
   };

@@ -5,7 +5,7 @@ describe('JetState', () => {
     it('should return an observable which passes a current value to each new subscription', async () => {
       const state = new JetState<{foo: number}>();
       state.reset({foo: 1});
-      const foo$ = state.map(it => it.foo).current$;
+      const foo$ = state.pick(it => it.foo).current$;
 
       let subValue1 = -1;
       foo$.subscribe(value => (subValue1 = value));
@@ -27,7 +27,7 @@ describe('JetState', () => {
     it('should return an observable which passes new changes to each subscription', async () => {
       const state = new JetState<{foo: number}>();
       state.reset({foo: 1});
-      const foo$ = state.map(it => it.foo).changes$;
+      const foo$ = state.pick(it => it.foo).changes$;
 
       let subValue1 = -1;
       foo$.subscribe(value => (subValue1 = value));
@@ -53,8 +53,8 @@ describe('JetState', () => {
 
     it('should set default values to the state', () => {
       const state = new JetState({foo: 1, bar: 'hello'});
-      expect(state.select(it => it.foo)).toBe(1);
-      expect(state.select(it => it.bar)).toBe('hello');
+      expect(state.getValue(it => it.foo)).toBe(1);
+      expect(state.getValue(it => it.bar)).toBe('hello');
     });
   });
 });

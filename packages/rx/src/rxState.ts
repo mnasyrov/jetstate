@@ -1,5 +1,6 @@
 import {Consumer, Projection, Selector, State} from '@jetstate/core';
-import {Observable} from 'rxjs';
+import {defer, Observable} from 'rxjs';
+import {startWith} from 'rxjs/operators';
 
 export interface RxProjection<V> extends Projection<V> {
   readonly current$: Observable<V>;
@@ -9,35 +10,23 @@ export interface RxProjection<V> extends Projection<V> {
 export function createRxProjection<V>(
   projection: Projection<V>,
 ): RxProjection<V> {
-  let current$: Observable<V>;
-  let changes$: Observable<V>;
-
   return {
     get current(): V {
       return projection.current;
     },
 
     get current$(): Observable<V> {
-      if (!current$) {
-        current$ = new Observable<V>(subscriber => {
-          subscriber.next(projection.current);
-          return projection.listenChanges(value => subscriber.next(value));
-        });
-      }
-      return current$;
+      return defer(() => this.changes$.pipe(startWith<V, V>(this.current)));
     },
 
     get changes$(): Observable<V> {
-      if (!changes$) {
-        changes$ = new Observable<V>(subscriber => {
-          return projection.listenChanges(value => subscriber.next(value));
-        });
-      }
-      return changes$;
+      return new Observable<V>(subscriber => {
+        return projection.subscribe(value => subscriber.next(value));
+      });
     },
 
-    listenChanges(consumer: Consumer<V>) {
-      return projection.listenChanges(consumer);
+    subscribe(consumer: Consumer<V>) {
+      return projection.subscribe(consumer);
     },
   };
 }
@@ -54,7 +43,7 @@ export class RxState<Model extends object> extends State<Model>
     return this.stateProjection.changes$;
   }
 
-  map<V>(selector: Selector<Model, V>): RxProjection<V> {
-    return createRxProjection(super.map(selector));
+  pick<V>(selector: Selector<Model, V>): RxProjection<V> {
+    return createRxProjection(super.pick(selector));
   }
 }

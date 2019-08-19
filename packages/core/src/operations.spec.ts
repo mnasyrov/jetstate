@@ -7,7 +7,7 @@ describe('merge()', () => {
     const state2 = new State({y: 2});
 
     const computed = merge(
-      {x: state1.map(it => it.x), y: state2.map(it => it.y)},
+      {x: state1.pick(it => it.x), y: state2.pick(it => it.y)},
       ({x, y}) => x + y,
     );
 
@@ -22,7 +22,7 @@ describe('merge()', () => {
         const state2 = new State({y: 2});
 
         const computed = merge(
-          {x: state1.map(it => it.x), y: state2.map(it => it.y)},
+          {x: state1.pick(it => it.x), y: state2.pick(it => it.y)},
           ({x, y}) => x + y,
         );
 
@@ -40,7 +40,7 @@ describe('merge()', () => {
         const state2 = new State({y: 2});
 
         const computed = merge(
-          {x: state1.map(it => it.x), y: state2.map(it => it.y)},
+          {x: state1.pick(it => it.x), y: state2.pick(it => it.y)},
           ({x, y}) => {
             return {value: x + y};
           },
