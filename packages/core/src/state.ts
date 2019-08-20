@@ -1,5 +1,5 @@
+import {Consumer, Emitter, Subscription} from '@mnasyrov/pubsub';
 import {Projection} from './projection';
-import {Consumer, Emitter, Subscription} from './pubsub';
 
 export type Selector<Model extends object, Value> = (
   state: Readonly<Model>,

@@ -1,5 +1,5 @@
+import {Consumer, Subscription} from '@mnasyrov/pubsub';
 import {Projection} from './projection';
-import {Consumer, Subscription} from './pubsub';
 
 export function map<V, R>(
   source: Projection<V>,

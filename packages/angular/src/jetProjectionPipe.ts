@@ -1,10 +1,14 @@
 import {ChangeDetectorRef, OnDestroy, Pipe, PipeTransform} from '@angular/core';
-import {Projection, Subscription} from '@jetstate/core';
+import {Projection} from '@jetstate/core';
 
 @Pipe({name: 'jet', pure: false})
 export class JetProjectionPipe implements OnDestroy, PipeTransform {
   private _projection: Projection<any> | undefined;
-  private _subscription: Subscription | undefined;
+  private _subscription:
+    | {
+        unsubscribe(): void;
+      }
+    | undefined;
 
   constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 

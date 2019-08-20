@@ -1,4 +1,4 @@
-import {Consumer, Projection, Selector, State} from '@jetstate/core';
+import {Projection, Selector, State} from '@jetstate/core';
 import {defer, Observable} from 'rxjs';
 import {startWith} from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ export function createRxProjection<V>(
       });
     },
 
-    subscribe(consumer: Consumer<V>) {
+    subscribe(consumer: (value: V) => any) {
       return projection.subscribe(consumer);
     },
   };

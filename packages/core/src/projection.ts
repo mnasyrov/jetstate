@@ -1,4 +1,4 @@
-import {Consumer, Subscription} from './pubsub';
+import {Consumer, Subscription} from '@mnasyrov/pubsub';
 
 export interface Projection<V> {
   readonly current: V;
