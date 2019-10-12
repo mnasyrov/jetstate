@@ -1,46 +1,32 @@
-import {Consumer, Subscription} from '@mnasyrov/pubsub';
-import {Projection} from './projection';
+import {defer, Observable} from 'rxjs';
+import {distinctUntilChanged, map, startWith} from 'rxjs/operators';
 import {Store} from './store';
 
-export type Selector<State extends object, Value> = (
-  state: Readonly<State>,
-) => Value;
+export type Selector<State extends object, V> = (state: Readonly<State>) => V;
+
+export function select<State extends object, V>(
+  store: Store<State>,
+  selector: Selector<State, V>,
+): Observable<V> {
+  return defer(() => {
+    const currentValue = selector(store.state);
+    return store.state$.pipe(
+      map(selector),
+      startWith<V, V>(currentValue),
+      distinctUntilChanged(),
+    );
+  });
+}
 
 export class Query<State extends object> {
   constructor(protected store: Store<State>) {}
 
-  get state(): Readonly<State> {
-    return this.store.value;
+  get state(): Readonly<Readonly<State>> {
+    return this.store.state;
   }
 
-  select<V>(selector: Selector<State, V>): Projection<V> {
-    return createProjection(this.store, selector);
+  /** Always return an Observable which pushes the current value first. */
+  select<V>(selector: Selector<State, V>): Observable<V> {
+    return select(this.store, selector);
   }
-
-  selectValue<V>(selector: Selector<State, V>): V {
-    return selector(this.store.value);
-  }
-}
-
-export function createProjection<State extends object, V>(
-  store: Store<State>,
-  selector: Selector<State, V>,
-): Projection<V> {
-  return {
-    get value(): V {
-      return selector(store.value);
-    },
-
-    subscribe(subscriber: Consumer<V>): Subscription {
-      let currentValue: V;
-
-      return store.subscribe((values: State) => {
-        const value = selector(values);
-        if (value !== currentValue) {
-          currentValue = value;
-          subscriber(value);
-        }
-      });
-    },
-  };
 }

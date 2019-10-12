@@ -1,30 +1,24 @@
-import {Consumer, Emitter, Subscription} from '@mnasyrov/pubsub';
-import {Projection} from './projection';
+import {BehaviorSubject, Observable} from 'rxjs';
 
-export class Store<State extends object>
-  implements Projection<Readonly<State>> {
-  private readonly emitter: Emitter<Readonly<State>> = new Emitter<
-    Readonly<State>
-  >();
-  private state: Readonly<State>;
+export class Store<State extends object> {
+  private readonly store: BehaviorSubject<Readonly<State>>;
   private isStateUpdating: boolean = false;
   private pendingResetState: Readonly<State> | undefined = undefined;
   private pendingPatchState: Readonly<Partial<State>> | undefined = undefined;
 
+  readonly state$: Observable<Readonly<State>>;
+
   constructor(initialState: Readonly<State>) {
-    this.state = Object.assign({}, initialState) as State;
+    this.store = new BehaviorSubject(initialState);
+    this.state$ = this.store.asObservable();
   }
 
-  get value(): Readonly<State> {
-    return this.state;
-  }
-
-  subscribe(subscriber: Consumer<Readonly<State>>): Subscription {
-    return this.emitter.subscribe((state: State) => subscriber(state));
+  get state(): Readonly<State> {
+    return this.store.getValue();
   }
 
   reset(state: Readonly<State>) {
-    this.pendingResetState = Object.assign({}, state);
+    this.pendingResetState = state;
     this.pendingPatchState = undefined;
     this.applyPendingStates();
   }
@@ -42,10 +36,10 @@ export class Store<State extends object>
     this.applyPendingStates();
   }
 
-  hasChanges(patch: Partial<Readonly<State>>): boolean {
+  private hasDifference(patch: Partial<Readonly<State>>): boolean {
+    const state = this.store.getValue();
     const keys = Object.getOwnPropertyNames(patch);
-    // @ts-ignore
-    return keys.some(key => this.state[key] !== patch[key]);
+    return keys.some(key => (state as any)[key] !== (patch as any)[key]);
   }
 
   private applyPendingStates() {
@@ -59,27 +53,22 @@ export class Store<State extends object>
       return;
     }
 
-    this.isStateUpdating = true;
-    try {
-      let nextState = this.pendingResetState
-        ? this.pendingResetState
-        : this.state;
-      if (this.pendingPatchState) {
-        nextState = Object.assign({}, nextState, this.pendingPatchState);
-      }
-
-      this.pendingResetState = undefined;
-      this.pendingPatchState = undefined;
-
-      if (this.hasChanges(nextState)) {
-        this.state = nextState;
-        this.emitter.emit(this.state);
-      }
-    } catch (error) {
-      this.isStateUpdating = false;
-      throw error;
+    let nextState = this.state;
+    if (this.pendingResetState) {
+      nextState = this.pendingResetState;
     }
-    this.isStateUpdating = false;
+    if (this.pendingPatchState) {
+      nextState = Object.assign({}, nextState, this.pendingPatchState);
+    }
+
+    this.pendingResetState = undefined;
+    this.pendingPatchState = undefined;
+
+    if (this.hasDifference(nextState)) {
+      this.isStateUpdating = true;
+      this.store.next(nextState);
+      this.isStateUpdating = false;
+    }
 
     if (this.pendingResetState || this.pendingPatchState) {
       this.applyPendingStates();
