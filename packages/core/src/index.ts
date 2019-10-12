@@ -1,3 +1,4 @@
 export * from './operations';
 export * from './projection';
-export * from './state';
+export * from './query';
+export * from './store';

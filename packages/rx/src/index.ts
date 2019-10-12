@@ -1,1 +1,2 @@
-export * from './rxState';
+export * from './rxQuery';
+export * from './rxProjection';
