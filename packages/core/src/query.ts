@@ -4,6 +4,7 @@ import {Store} from './store';
 
 export type Selector<State extends object, V> = (state: Readonly<State>) => V;
 
+/** Returns an observable which pushes the current value first. */
 export function select<State extends object, V>(
   store: Store<State>,
   selector: Selector<State, V>,
@@ -19,13 +20,13 @@ export function select<State extends object, V>(
 }
 
 export class Query<State extends object> {
-  constructor(protected store: Store<State>) {}
+  constructor(private store: Store<State>) {}
 
   get state(): Readonly<Readonly<State>> {
     return this.store.state;
   }
 
-  /** Always return an Observable which pushes the current value first. */
+  /** Returns an observable which pushes the current value first. */
   select<V>(selector: Selector<State, V>): Observable<V> {
     return select(this.store, selector);
   }

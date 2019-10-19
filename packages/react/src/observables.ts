@@ -1,5 +1,5 @@
-import { Reducer, useEffect, useMemo, useReducer, useState } from 'react';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {Reducer, useEffect, useMemo, useReducer, useState} from 'react';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export function useAsObservable<T>(value: T): Observable<T> {
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -11,8 +11,13 @@ export function useAsObservable<T>(value: T): Observable<T> {
   return value$;
 }
 
-export function useObservable<T>(value$: Observable<T>, initialValue: T) {
-  const [value, setValue] = useState<T>(initialValue);
+export function useObservable<T>(value$: Observable<T>, initialValue: T): T;
+export function useObservable<T>(value$: Observable<T>): T | undefined;
+export function useObservable<T>(
+  value$: Observable<T>,
+  initialValue?: T,
+): T | undefined {
+  const [value, setValue] = useState<T | undefined>(initialValue);
 
   useEffect(() => {
     const subscription = value$.subscribe(setValue);
@@ -23,16 +28,23 @@ export function useObservable<T>(value$: Observable<T>, initialValue: T) {
 }
 
 export type ObservableState<T> = {
-  status: 'initial' | 'loaded' | 'completed' | 'error';
+  status: 'initial' | 'active' | 'completed' | 'error';
   value: T;
-  error?: any;
+  error?: Error | any;
 };
 
 export function useObservableState<T>(
   value$: Observable<T>,
   initialValue: T,
-): ObservableState<T> {
-  const [state, dispatch] = useReducer<ObservableStateReducer<T>>(
+): ObservableState<T>;
+export function useObservableState<T>(
+  value$: Observable<T>,
+): ObservableState<T | undefined>;
+export function useObservableState<T>(
+  value$: Observable<T>,
+  initialValue?: T,
+): ObservableState<T | undefined> {
+  const [state, dispatch] = useReducer<ObservableStateReducer<T | undefined>>(
     observableStateReducer,
     {
       status: 'initial',
@@ -42,9 +54,9 @@ export function useObservableState<T>(
 
   useEffect(() => {
     const subscription = value$.subscribe({
-      next: (value) => dispatch({ type: 'next', value }),
-      complete: () => dispatch({ type: 'complete' }),
-      error: (error) => dispatch({ type: 'error', error }),
+      next: value => dispatch({type: 'next', value}),
+      complete: () => dispatch({type: 'complete'}),
+      error: error => dispatch({type: 'error', error}),
     });
     return () => subscription.unsubscribe();
   }, [value$]);
@@ -53,9 +65,9 @@ export function useObservableState<T>(
 }
 
 type ObservableStateAction<T> =
-  | { type: 'next'; value: T }
-  | { type: 'complete' }
-  | { type: 'error'; error: any };
+  | {type: 'next'; value: T}
+  | {type: 'complete'}
+  | {type: 'error'; error: any};
 
 type ObservableStateReducer<T> = Reducer<
   ObservableState<T>,
@@ -68,11 +80,11 @@ function observableStateReducer<T>(
 ): ObservableState<T> {
   switch (action.type) {
     case 'next':
-      return { status: 'loaded', value: action.value };
+      return {status: 'active', value: action.value};
     case 'complete':
-      return { ...state, status: 'completed' };
+      return {...state, status: 'completed'};
     case 'error':
-      return { ...state, status: 'error', error: action.error };
+      return {...state, status: 'error', error: action.error};
     default:
       return state;
   }

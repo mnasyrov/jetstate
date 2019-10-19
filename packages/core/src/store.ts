@@ -2,7 +2,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 
 export class Store<State extends object> {
   private readonly store: BehaviorSubject<Readonly<State>>;
-  private isStateUpdating: boolean = false;
+  private isUpdating: boolean = false;
   private pendingResetState: Readonly<State> | undefined = undefined;
   private pendingPatchState: Readonly<Partial<State>> | undefined = undefined;
 
@@ -20,7 +20,7 @@ export class Store<State extends object> {
   reset(state: Readonly<State>) {
     this.pendingResetState = state;
     this.pendingPatchState = undefined;
-    this.applyPendingStates();
+    this.applyState();
   }
 
   update(patch: Partial<Readonly<State>> | null | undefined) {
@@ -28,12 +28,12 @@ export class Store<State extends object> {
       return;
     }
 
-    if (this.isStateUpdating) {
+    if (this.isUpdating) {
       this.pendingPatchState = Object.assign({}, this.pendingPatchState, patch);
     } else {
       this.pendingPatchState = patch;
     }
-    this.applyPendingStates();
+    this.applyState();
   }
 
   private hasDifference(patch: Partial<Readonly<State>>): boolean {
@@ -42,8 +42,8 @@ export class Store<State extends object> {
     return keys.some(key => (state as any)[key] !== (patch as any)[key]);
   }
 
-  private applyPendingStates() {
-    if (this.isStateUpdating) {
+  private applyState() {
+    if (this.isUpdating) {
       return;
     }
     if (
@@ -65,13 +65,13 @@ export class Store<State extends object> {
     this.pendingPatchState = undefined;
 
     if (this.hasDifference(nextState)) {
-      this.isStateUpdating = true;
+      this.isUpdating = true;
       this.store.next(nextState);
-      this.isStateUpdating = false;
+      this.isUpdating = false;
     }
 
     if (this.pendingResetState || this.pendingPatchState) {
-      this.applyPendingStates();
+      this.applyState();
     }
   }
 }
