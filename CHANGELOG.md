@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/mnasyrov/jetstate/compare/v0.0.22...v0.3.0) (2019-10-21)
+
+
+### Features
+
+* Added `Projection` for a state value. ([ae24b3e](https://github.com/mnasyrov/jetstate/commit/ae24b3ec633af83327fec0370a5f88088a6c28cd))
+* Added factory functions for Store and Query. ([140128f](https://github.com/mnasyrov/jetstate/commit/140128ff8ae687d362d0f8628b309f7e136cee9f))
+* Added helpers for React.js ([0e01f80](https://github.com/mnasyrov/jetstate/commit/0e01f80ea6f96c93d05c4aa29628257961b23d36))
+* New API based on RxJS. ([766dc7c](https://github.com/mnasyrov/jetstate/commit/766dc7c2a0037703d0a57639178528796228d974))
+* Simplified API ([c05a2f2](https://github.com/mnasyrov/jetstate/commit/c05a2f2ffdab180aacff0e3e926f8ac765cf98a5))
+
 ### [0.0.22](https://github.com/mnasyrov/jetstate/compare/v0.0.21...v0.0.22) (2019-08-16)
 
 
