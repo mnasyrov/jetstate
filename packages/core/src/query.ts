@@ -19,6 +19,23 @@ export function select<State extends object, V>(
   });
 }
 
+export interface Projection<V> {
+  readonly value: V;
+  readonly value$: Observable<V>;
+}
+
+export function project<State extends object, V>(
+  store: Store<State>,
+  selector: Selector<State, V>,
+): Projection<V> {
+  return {
+    get value() {
+      return selector(store.state);
+    },
+    value$: select(store, selector),
+  };
+}
+
 export function createQuery<State extends object>(store: Store<State>) {
   return new Query<State>(store);
 }
@@ -33,5 +50,9 @@ export class Query<State extends object> {
   /** Returns an observable which pushes the current value first. */
   select<V>(selector: Selector<State, V>): Observable<V> {
     return select(this.store, selector);
+  }
+
+  project<V>(selector: Selector<State, V>): Projection<V> {
+    return project(this.store, selector);
   }
 }
