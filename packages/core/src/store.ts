@@ -1,5 +1,11 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 
+export function createStore<State extends object>(
+  initialState: Readonly<State>,
+) {
+  return new Store<State>(initialState);
+}
+
 export class Store<State extends object> {
   private readonly store: BehaviorSubject<Readonly<State>>;
   private isUpdating: boolean = false;

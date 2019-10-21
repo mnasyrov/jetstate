@@ -19,6 +19,10 @@ export function select<State extends object, V>(
   });
 }
 
+export function createQuery<State extends object>(store: Store<State>) {
+  return new Query<State>(store);
+}
+
 export class Query<State extends object> {
   constructor(private store: Store<State>) {}
 
