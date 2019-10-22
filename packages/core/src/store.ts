@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 export function createStore<State extends object>(
   initialState: Readonly<State>,
@@ -8,20 +8,24 @@ export function createStore<State extends object>(
 
 export class Store<State extends object> {
   private readonly store: BehaviorSubject<Readonly<State>>;
+  private readonly storeChanges = new Subject<Readonly<State>>();
+
   private isUpdating: boolean = false;
   private pendingResetState: Readonly<State> | undefined = undefined;
   private pendingPatchState: Readonly<Partial<State>> | undefined = undefined;
 
-  readonly state$: Observable<Readonly<State>>;
-
   constructor(initialState: Readonly<State>) {
     this.store = new BehaviorSubject(initialState);
     this.state$ = this.store.asObservable();
+    this.changes$ = this.storeChanges.asObservable();
   }
 
   get state(): Readonly<State> {
     return this.store.getValue();
   }
+
+  readonly state$: Observable<Readonly<State>>;
+  readonly changes$: Observable<Readonly<State>>;
 
   reset(state: Readonly<State>) {
     this.pendingResetState = state;
@@ -73,6 +77,7 @@ export class Store<State extends object> {
     if (this.hasDifference(nextState)) {
       this.isUpdating = true;
       this.store.next(nextState);
+      this.storeChanges.next(nextState);
       this.isUpdating = false;
     }
 

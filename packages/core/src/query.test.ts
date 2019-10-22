@@ -45,7 +45,7 @@ describe('project()', () => {
     });
 
     describe('.value$', () => {
-      it('should return an observable with value changes', () => {
+      it('should return an observable with a current value and value changes', () => {
         let result;
         const store = new Store({foo: 1});
 
@@ -55,7 +55,7 @@ describe('project()', () => {
         const subscription = projection.value$.subscribe(
           value => (result = value),
         );
-        expect(result).toBe(undefined);
+        expect(result).toBe(2);
 
         store.update({foo: 3});
         expect(result).toBe(3);
@@ -66,18 +66,18 @@ describe('project()', () => {
       });
     });
 
-    describe('.select()', () => {
-      it('should return an observable with a current value and value changes', () => {
+    describe('.changes$', () => {
+      it('should return an observable with value changes', () => {
         let result;
         const store = new Store({foo: 1});
 
         const projection = project(store, state => state.foo);
         store.update({foo: 2});
 
-        const subscription = projection
-          .select()
-          .subscribe(value => (result = value));
-        expect(result).toBe(2);
+        const subscription = projection.changes$.subscribe(
+          value => (result = value),
+        );
+        expect(result).toBe(undefined);
 
         store.update({foo: 3});
         expect(result).toBe(3);

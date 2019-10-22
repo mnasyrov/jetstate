@@ -21,29 +21,38 @@ export interface Projection<V> {
   /** A current value */
   readonly value: V;
 
-  /** Returns an observable for value changes. */
+  /** An observable which pushes the current value first. */
   readonly value$: Observable<V>;
 
-  /** Returns an observable which pushes the current value first. */
-  select(): Observable<V>;
+  /** An observable for value changes. */
+  readonly changes$: Observable<V>;
 }
 
 export function project<State extends object, V>(
   store: Store<State>,
   selector: Selector<State, V>,
 ): Projection<V> {
+  let value$: Observable<V>;
+  let changes$: Observable<V>;
+
   return {
     get value() {
       return selector(store.state);
     },
-    value$: defer(() => {
-      return store.state$.pipe(
-        map(selector),
-        distinctUntilChanged(),
-      );
-    }),
-    select() {
-      return select(store, selector);
+    get value$() {
+      if (!value$) {
+        value$ = select(store, selector);
+      }
+      return value$;
+    },
+    get changes$() {
+      if (!changes$) {
+        changes$ = store.changes$.pipe(
+          map(selector),
+          distinctUntilChanged(),
+        );
+      }
+      return changes$;
     },
   };
 }
@@ -64,6 +73,7 @@ export class Query<State extends object> {
     return select(this.store, selector);
   }
 
+  /** Returns a subset of a state. */
   project<V>(selector: Selector<State, V>): Projection<V> {
     return project(this.store, selector);
   }
