@@ -1,6 +1,6 @@
 # JetState 🚀
 
-_Simple State Management with RxJS. Framework agnostic._
+_Reactive app state management with RxJS_
 
 [![npm version](https://badge.fury.io/js/%40jetstate%2Fcore.svg)](https://www.npmjs.com/@jetstate/core)
 [![build Status](https://travis-ci.org/mnasyrov/jetstate.svg?branch=master)](https://travis-ci.org/mnasyrov/jetstate)
@@ -13,6 +13,7 @@ API and docs **will be changed** – the library is not stable.
 ## Overview
 
 JetState is a simple library for app's state management. It leverages RxJS to make reactive Flux-like data flow:
+
 ```
 Store ----> Query ---------+
  ^          |              |
@@ -20,20 +21,17 @@ Store ----> Query ---------+
  +--------- Services <---- UI Components 
 ```
 
-
-## Usage
+## Examples
 
 ### Angular project
 
 Install dependencies:
 
 ```bash
-yarn add @jetstate/core
-
-# Or: npm install --save @jetstate/core
+npm install --save @jetstate/core
 ```
 
-Declare a state:
+Usage example:
 
 ```typescript
 import {Component, Injectable, NgModule} from '@angular/core';
@@ -57,11 +55,7 @@ export class UserStore extends Store<UserState> {
 // Use Query to read data from the store.
 @Injectable()
 export class UserQuery extends Query<UserState> {
-  constructor(store: UserStore) {
-    super(store);
-  }
-
-  readonly username$ = this.select(state => state.username);
+  username$ = this.select(state => state.username);
 }
 
 // Separate store updating from components.
@@ -74,6 +68,12 @@ export class UserService {
   }
 }
 
+// Provide the store, query and service to the app:
+@NgModule({
+  providers: [UserStore, UserQuery, UserService],
+})
+export class AppModule {}
+
 // Use the state:
 @Component({
   selector: 'User',
@@ -84,20 +84,73 @@ export class UserService {
 export class UserComponent {
   constructor(private query: UserQuery, private service: UserService) {}
 
-  readonly message$ = this.query.username$.pipe(
-    map(username => `Hello ${username}!`),
-  );
+  message$ = this.query.username$.pipe(map(username => `Hello ${username}!`));
 
   changeUserName(value: string) {
     this.service.setUserName(value);
   }
 }
+```
 
-// Provide the store, query and service to the app:
-@NgModule({
-  providers: [UserStore, UserQuery, UserService],
-})
-export class AppModule {}
+### React project
+
+Install dependencies:
+
+```bash
+npm install --save @jetstate/core @jetstate/react
+```
+
+Usage example:
+
+```typescript jsx
+import {Query, Store} from '@jetstate/core';
+import {useObservable} from '@jetstate/react';
+
+// Declare a state:
+export interface UserState {
+  userName: string;
+}
+
+// Define the store
+export class UserStore extends Store<UserState> {
+  constructor() {
+    super({
+      userName: 'World',
+    });
+  }
+}
+
+// Use Query to read data from the store.
+export class UserQuery extends Query<UserState> {
+  username$ = this.select(state => state.username);
+}
+
+// Separate store updating from components.
+export class UserService {
+  constructor(private store: UserStore) {}
+
+  setUserName(username: string) {
+    this.store.update({username});
+  }
+}
+
+// Use the state:
+export function UserComponent(props: {query: UserQuery; service: UserService}) {
+  const {query, service} = props;
+
+  const username = useObservable(query.username$);
+
+  return (
+    <div>
+      <h1>Hello {username}!</h1>
+      <input
+        type="text"
+        value={username}
+        onChange={event => service.setUserName(event.target.value)}
+      />
+    </div>
+  );
+}
 ```
 
 ## Development

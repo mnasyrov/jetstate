@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/mnasyrov/jetstate/compare/v0.3.0...v0.3.1) (2019-10-22)
+
+
+### Features
+
+* Implemented API for projections. ([48c4fcc](https://github.com/mnasyrov/jetstate/commit/48c4fcc35f549d205055c1c6db32837a2ef29193))
+* Projections ([36e58cb](https://github.com/mnasyrov/jetstate/commit/36e58cb84f384981742c4aaa5e5e585e842772a9))
+
 ## [0.3.0](https://github.com/mnasyrov/jetstate/compare/v0.0.22...v0.3.0) (2019-10-21)
 
 
