@@ -1,7 +1,7 @@
 import {Store} from './store';
 
 describe('Store', () => {
-  describe('getter state()', () => {
+  describe('.state', () => {
     it('should return a current state', () => {
       const store = new Store({});
       expect(store.state).toBeTruthy();
@@ -20,7 +20,7 @@ describe('Store', () => {
     });
   });
 
-  describe('method reset()', () => {
+  describe('.reset()', () => {
     it('should reset to a new state', () => {
       const store = new Store({foo: 'bar', xyz: 0});
       store.reset({foo: 'baz', xyz: 1});

@@ -22,25 +22,71 @@ describe('select()', () => {
 });
 
 describe('project()', () => {
-  it('should return a projection with a current value and value$ observable', () => {
-    let result;
+  it('should return a projection', () => {
     const store = new Store({foo: 1});
-
     const projection = project(store, state => state.foo);
-    store.update({foo: 2});
+    expect(projection).toBeDefined();
+  });
 
-    const subscription = projection.value$.subscribe(value => (result = value));
-    expect(projection.value).toBe(2);
-    expect(result).toBe(2);
+  describe('Projection', () => {
+    describe('.value', () => {
+      it('should return a current value', () => {
+        const store = new Store({foo: 1});
 
-    store.update({foo: 3});
-    expect(projection.value).toBe(3);
-    expect(result).toBe(3);
+        const projection = project(store, state => state.foo);
+        expect(projection.value).toBe(1);
 
-    subscription.unsubscribe();
-    store.update({foo: 4});
-    expect(projection.value).toBe(4);
-    expect(result).toBe(3);
+        store.update({foo: 2});
+        expect(projection.value).toBe(2);
+
+        store.update({foo: 3});
+        expect(projection.value).toBe(3);
+      });
+    });
+
+    describe('.value$', () => {
+      it('should return an observable with value changes', () => {
+        let result;
+        const store = new Store({foo: 1});
+
+        const projection = project(store, state => state.foo);
+        store.update({foo: 2});
+
+        const subscription = projection.value$.subscribe(
+          value => (result = value),
+        );
+        expect(result).toBe(undefined);
+
+        store.update({foo: 3});
+        expect(result).toBe(3);
+
+        subscription.unsubscribe();
+        store.update({foo: 4});
+        expect(result).toBe(3);
+      });
+    });
+
+    describe('.select()', () => {
+      it('should return an observable with a current value and value changes', () => {
+        let result;
+        const store = new Store({foo: 1});
+
+        const projection = project(store, state => state.foo);
+        store.update({foo: 2});
+
+        const subscription = projection
+          .select()
+          .subscribe(value => (result = value));
+        expect(result).toBe(2);
+
+        store.update({foo: 3});
+        expect(result).toBe(3);
+
+        subscription.unsubscribe();
+        store.update({foo: 4});
+        expect(result).toBe(3);
+      });
+    });
   });
 });
 

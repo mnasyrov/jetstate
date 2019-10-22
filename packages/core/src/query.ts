@@ -1,5 +1,5 @@
 import {defer, Observable} from 'rxjs';
-import {distinctUntilChanged, map, startWith} from 'rxjs/operators';
+import {distinctUntilChanged, map} from 'rxjs/operators';
 import {Store} from './store';
 
 export type Selector<State extends object, V> = (state: Readonly<State>) => V;
@@ -10,18 +10,22 @@ export function select<State extends object, V>(
   selector: Selector<State, V>,
 ): Observable<V> {
   return defer(() => {
-    const currentValue = selector(store.state);
     return store.state$.pipe(
       map(selector),
-      startWith<V, V>(currentValue),
       distinctUntilChanged(),
     );
   });
 }
 
 export interface Projection<V> {
+  /** A current value */
   readonly value: V;
+
+  /** Returns an observable for value changes. */
   readonly value$: Observable<V>;
+
+  /** Returns an observable which pushes the current value first. */
+  select(): Observable<V>;
 }
 
 export function project<State extends object, V>(
@@ -32,7 +36,15 @@ export function project<State extends object, V>(
     get value() {
       return selector(store.state);
     },
-    value$: select(store, selector),
+    value$: defer(() => {
+      return store.state$.pipe(
+        map(selector),
+        distinctUntilChanged(),
+      );
+    }),
+    select() {
+      return select(store, selector);
+    },
   };
 }
 
