@@ -10,6 +10,7 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "esModuleInterop": true
   }
 }

@@ -21,7 +21,8 @@
     "rxjs",
     "react"
   ],
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "peerDependencies": {
@@ -38,6 +39,6 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "tsc"
+    "build": "tsc --emitDeclarationOnly && rollup -c"
   }
 }
