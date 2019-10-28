@@ -1,7 +1,7 @@
 {
   "name": "jetstate",
   "description": "Core of JetState - reactive state management with RxJS",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "license": "MIT",
   "author": {
@@ -48,7 +48,7 @@
     "build": "lerna run build",
     "release": "lerna version",
     "publish": "lerna publish",
-    "prepublish": "npm run clean && npm run build && npm run lint && npm run test",
+    "prepublishOnly": "npm run clean && npm run build && npm run lint && npm run test",
     "publish-check": "lerna exec -- npm publish --dry-run"
   }
 }
