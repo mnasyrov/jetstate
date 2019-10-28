@@ -10,7 +10,7 @@ Reactive state management with RxJS.
 
 JetState is a library for reactive state management and built on top of RxJS. It takes the idea of multiple data stores from Flux, immutable updates from Redux and leverage data streaming by RxJS. In result, it provides observable data store model.
 
-JetState has a strong influence by [Akita](https://github.com/datorama/akita/). This library is a kind of reimplementation (not fork) of Akita's core API and its pattern, so some docs are reused. JetState provides only core features for observable data store pattern and tends to be clean and simple tool.
+JetState has influenced by [Akita](https://github.com/datorama/akita/). This library is a kind of reimplementation (not fork) of Akita's core API and its pattern, albeit some docs are reused. JetState provides only core features for observable data store pattern and tends to be clean and simple tool.
 
 JetState is framework agnostic, it is more like "M" in your MVVM, MVP and other M?? architecture. Its opinionated structure provides a pattern for managing app's state which can be used in many cases.
 
