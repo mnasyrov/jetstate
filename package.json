@@ -46,7 +46,9 @@
     "format-check": "prettier --list-different \"packages/*/{src,test}/**/*.ts\"",
     "test": "jest",
     "build": "lerna run build",
+    "release": "lerna version --force-publish",
     "prepublishOnly": "npm run clean && npm run build && npm run lint && npm run test",
+    "publish": "lerna publish from-package",
     "publish-check": "lerna exec -- npm publish --dry-run"
   }
 }
