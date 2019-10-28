@@ -36,7 +36,9 @@ JetState is framework agnostic, it is more like "M" in your MVVM, MVP and other 
 
 Install from the NPM repository using npm or yarn:
 
-- `@jetstate/core` - core functionality, framework agnostic.
+- `@jetstate/core` 
+
+  Core functionality, framework agnostic. Can be used with Angular as is.
 
   ```bash
   npm install @jetstate/core
@@ -46,7 +48,9 @@ Install from the NPM repository using npm or yarn:
   yarn add @jetstate/core
   ```
 
-- `@jetstate/react` - Helpers for React.js to use query's observables in components with hooks.
+- `@jetstate/react`
+
+  Helpers for React.js to use query's observables in components with hooks.
 
   ```bash
   npm install @jetstate/react
