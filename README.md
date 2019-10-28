@@ -3,7 +3,7 @@
 _Reactive state management with RxJS_
 
 [![NPM Version](https://badge.fury.io/js/%40jetstate%2Fcore.svg)](https://www.npmjs.com/@jetstate/core)
-[![Build Status](https://github.com/mnasyrov/jetstate/workflows/nodeci/badge.svg)](https://github.com/mnasyrov/jetstate/actions)
+[![Build Status](https://github.com/mnasyrov/jetstate/workflows/Node%20CI/badge.svg)](https://github.com/mnasyrov/jetstate/actions)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 ## Work in progress 🏗
