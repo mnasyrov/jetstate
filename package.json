@@ -48,6 +48,7 @@
     "build": "lerna run build",
     "release": "lerna version",
     "publish": "lerna publish",
-    "publish-check": "ls -1d packages/* | xargs -n 1 npm publish --dry-run"
+    "prepublish": "npm run clean && npm run build && npm run lint && npm run test",
+    "publish-check": "lerna exec -- npm publish --dry-run"
   }
 }
