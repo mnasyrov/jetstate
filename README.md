@@ -1,6 +1,6 @@
 # JetState 🚀
 
-_Reactive app state management with RxJS_
+_Reactive state management with RxJS_
 
 [![npm version](https://badge.fury.io/js/%40jetstate%2Fcore.svg)](https://www.npmjs.com/@jetstate/core)
 [![build Status](https://travis-ci.org/mnasyrov/jetstate.svg?branch=master)](https://travis-ci.org/mnasyrov/jetstate)
@@ -166,7 +166,6 @@ Development scripts:
 - `yarn test` – runs unit tests.
 - `yarn check-format` – check formatting of source code.
 - `yarn format` – formats source code by [prettier](https://prettier.io/) tool.
-- `yarn check-commit` – runs all necessary checks, tests and builds to ensure the commit will be green.
 
 Build scripts:
 
@@ -181,7 +180,7 @@ yarn check-release [--release-as X.Y.Z]
 yarn release [--release-as X.Y.Z]
 git push --follow-tags origin master
 
-yarn dist-build && yarn check-publish
+npm run clean && npm run build && npm run check-publish
 npm run publish-packages
 ```
 

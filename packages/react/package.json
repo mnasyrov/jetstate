@@ -1,5 +1,6 @@
 {
   "name": "@jetstate/react",
+  "description": "Helpers for using JetState with React.js",
   "version": "0.3.2",
   "license": "MIT",
   "author": {

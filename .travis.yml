@@ -1,11 +1,14 @@
 language: node_js
 node_js:
-  - "11"
+  - "12"
 
 install:
-  - yarn install
+  - npm ci
 
 script:
-  - yarn clean
-  - yarn check-commit
-  - yarn check-publish
+  - npm run clean
+  - npm run format-check
+  - npm run lint
+  - npm run test
+  - npm run build
+  - npm run publish-check
