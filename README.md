@@ -106,9 +106,6 @@ interface Store<State extends object> {
 
   /** Updates the store by a specified patch object */
   update(patch: Partial<Readonly<State>> | null | undefined): void;
-
-  /** Resets the store to a specified state object */
-  reset(state: Readonly<State>): void;
 }
 ```
 
@@ -226,7 +223,7 @@ const tokenChanges$ = project(sessionStore, state => state.token).changes$;
 JetState does not restrict how you structure your code. Instead, it enforces a set of high-level principles:
 
 1. The Store is a single object that contains the store state and serves as the "single source of truth."
-2. The only way to change the state is by calling its `update()` or `reset()` methods.
+2. The only way to change the state is by calling its `update()` method.
 3. A UI component should NOT get data from the store directly but instead use a Query.
 4. Asynchronous logic and update calls should be encapsulated in services and data services.
 

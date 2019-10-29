@@ -20,28 +20,6 @@ describe('Store', () => {
     });
   });
 
-  describe('.reset()', () => {
-    it('should reset to a new state', () => {
-      const store = new Store({foo: 'bar', xyz: 0});
-      store.reset({foo: 'baz', xyz: 1});
-      expect(store.state).toEqual({foo: 'baz', xyz: 1});
-    });
-
-    it('should reset in case of a partial new state ', () => {
-      const store = new Store({foo: 'bar', xyz: 0});
-      store.reset({foo: 'baz', xyz: 1});
-      store.reset({foo: 'abc'} as any);
-      expect(store.state).toEqual({foo: 'abc'});
-    });
-
-    it('should reset in case a current state has an extra field', () => {
-      const store = new Store({foo: 'bar', xyz: 0});
-      store.update({extraField: 1} as any);
-      store.reset({foo: 'abc'} as any);
-      expect(store.state).toEqual({foo: 'abc'});
-    });
-  });
-
   describe('method update()', () => {
     it('should update a whole state', () => {
       const store = new Store({foo: 'bar', xyz: 0});
@@ -67,7 +45,7 @@ describe('Store', () => {
     });
   });
 
-  describe('triggering value listeners with a new state by update() and reset() methods', () => {
+  describe('triggering value listeners with a new state by update() method', () => {
     it('should trigger a listener in case a state was changed', () => {
       const store = new Store({bar: 0, foo: 0});
       const stateUpdates: any[] = [];
@@ -109,26 +87,19 @@ describe('Store', () => {
       ]);
     });
 
-    it('should keeps pending state resets during applying a current state updates', () => {
-      const store = new Store({x: 0, y: 0, z: 0});
-      const stateUpdates: any[] = [];
-      store.state$.subscribe(state => stateUpdates.push(state));
+    it('should reschedule continuous updating a state by subscribers', () => {
+      const store = new Store({x: 0});
+      const values: any[] = [];
+      store.state$.subscribe(({x}) => values.push(x));
       store.state$.subscribe(({x}) => {
-        store.reset({x, y: x * x, z: 0});
-        store.update({z: x * x * 10});
+        if (x < 100) {
+          store.update({x: x * 10});
+        }
       });
       store.update({x: 1});
       store.update({x: 2});
       store.update({x: 3});
-      expect(stateUpdates).toEqual([
-        {x: 0, y: 0, z: 0},
-        {x: 1, y: 0, z: 0},
-        {x: 1, y: 1, z: 10},
-        {x: 2, y: 1, z: 10},
-        {x: 2, y: 4, z: 40},
-        {x: 3, y: 4, z: 40},
-        {x: 3, y: 9, z: 90},
-      ]);
+      expect(values).toEqual([0, 1, 10, 100, 2, 20, 200, 3, 30, 300]);
     });
   });
 });

@@ -11,8 +11,7 @@ export class Store<State extends object> {
   private readonly storeChanges = new Subject<Readonly<State>>();
 
   private isUpdating: boolean = false;
-  private pendingResetState: Readonly<State> | undefined = undefined;
-  private pendingPatchState: Readonly<Partial<State>> | undefined = undefined;
+  private pendingPatch: Readonly<Partial<State>> | undefined = undefined;
 
   constructor(initialState: Readonly<State>) {
     this.store = new BehaviorSubject(initialState);
@@ -27,62 +26,39 @@ export class Store<State extends object> {
   readonly state$: Observable<Readonly<State>>;
   readonly changes$: Observable<Readonly<State>>;
 
-  reset(state: Readonly<State>) {
-    this.pendingResetState = state;
-    this.pendingPatchState = undefined;
-    this.applyState();
-  }
-
   update(patch: Partial<Readonly<State>> | null | undefined) {
     if (patch === undefined || patch === null) {
       return;
     }
 
     if (this.isUpdating) {
-      this.pendingPatchState = Object.assign({}, this.pendingPatchState, patch);
+      this.pendingPatch = Object.assign(this.pendingPatch || {}, patch);
     } else {
-      this.pendingPatchState = patch;
+      this.applyState(patch);
     }
-    this.applyState();
   }
 
-  private hasDifference(patch: Partial<Readonly<State>>): boolean {
+  private applyState(patch: Partial<Readonly<State>>) {
+    this.pendingPatch = undefined;
+
     const state = this.store.getValue();
-    const keys = Object.getOwnPropertyNames(patch);
-    return keys.some(key => (state as any)[key] !== (patch as any)[key]);
-  }
-
-  private applyState() {
-    if (this.isUpdating) {
-      return;
-    }
-    if (
-      this.pendingResetState === undefined &&
-      this.pendingPatchState === undefined
-    ) {
+    const hasDifference = Object.getOwnPropertyNames(patch).some(
+      key => (state as any)[key] !== (patch as any)[key],
+    );
+    if (!hasDifference) {
       return;
     }
 
-    let nextState = this.state;
-    if (this.pendingResetState) {
-      nextState = this.pendingResetState;
-    }
-    if (this.pendingPatchState) {
-      nextState = Object.assign({}, nextState, this.pendingPatchState);
-    }
+    const nextState = Object.assign({}, state, patch);
 
-    this.pendingResetState = undefined;
-    this.pendingPatchState = undefined;
+    this.isUpdating = true;
+    this.store.next(nextState);
+    this.storeChanges.next(nextState);
 
-    if (this.hasDifference(nextState)) {
-      this.isUpdating = true;
-      this.store.next(nextState);
-      this.storeChanges.next(nextState);
+    if (this.pendingPatch) {
+      this.applyState(this.pendingPatch);
+    } else {
       this.isUpdating = false;
-    }
-
-    if (this.pendingResetState || this.pendingPatchState) {
-      this.applyState();
     }
   }
 }
