@@ -16,20 +16,19 @@ JetState is framework agnostic, it is more like "M" in your MVVM, MVP and other 
 
 ```
 
-                           Updates         Data streams
-                         +--------> Store --------------+
-                         |                              |
-                         |                              |
-                         |                              v
- Backend API <-----> Service                          Query
-                         ^                              |
-                         |                              |
-                         |                              |
-                         |                              |
-                         +-------- UI Component <-------+
-                          Actions               Rendering
+                            Updates            Data streams
+                        +-------------> Store --------------+
+                        |                                   |
+                        |                                   |
+                        |                                   v
+ Backend API <-----> Service                              Query
+                        ^                                   |
+                        |                                   |
+                        |                                   |
+                        +---------- UI Component <----------+
+                          Actions                 Rendering
                          (methods)
-
+                         
 ```
 
 ## Installation
