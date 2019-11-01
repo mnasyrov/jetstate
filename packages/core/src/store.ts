@@ -30,15 +30,15 @@ export class Store<State extends object> {
     if (patch === undefined || patch === null) {
       return;
     }
-
-    if (this.isUpdating) {
-      this.pendingPatch = Object.assign(this.pendingPatch || {}, patch);
-    } else {
-      this.applyState(patch);
-    }
+    this.applyPatch(patch);
   }
 
-  private applyState(patch: Partial<Readonly<State>>) {
+  private applyPatch(patch: Partial<Readonly<State>>) {
+    if (this.isUpdating) {
+      this.pendingPatch = Object.assign(this.pendingPatch || {}, patch);
+      return;
+    }
+
     this.pendingPatch = undefined;
 
     const state = this.store.getValue();
@@ -54,11 +54,10 @@ export class Store<State extends object> {
     this.isUpdating = true;
     this.store.next(nextState);
     this.storeChanges.next(nextState);
+    this.isUpdating = false;
 
     if (this.pendingPatch) {
-      this.applyState(this.pendingPatch);
-    } else {
-      this.isUpdating = false;
+      this.applyPatch(this.pendingPatch);
     }
   }
 }

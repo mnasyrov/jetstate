@@ -64,12 +64,12 @@ describe('Store', () => {
       ]);
     });
 
-    it('should keeps pending state patches during applying a current state updates', () => {
+    it('should preserve pending patches during applying a current patch', () => {
       const store = new Store({x: 0, y: 0, z: 0});
       const stateUpdates: any[] = [];
       store.state$.subscribe(state => stateUpdates.push(state));
-      store.state$.subscribe(({x}) => store.update({y: x * x}));
-      store.state$.subscribe(({y}) => store.update({z: y * 10}));
+      store.state$.subscribe(({x}) => store.update({y: x}));
+      store.state$.subscribe(({y}) => store.update({z: y}));
       store.update({x: 1});
       store.update({x: 2});
       store.update({x: 3});
@@ -77,13 +77,13 @@ describe('Store', () => {
         {x: 0, y: 0, z: 0},
         {x: 1, y: 0, z: 0},
         {x: 1, y: 1, z: 0},
-        {x: 1, y: 1, z: 10},
-        {x: 2, y: 1, z: 10},
-        {x: 2, y: 4, z: 10},
-        {x: 2, y: 4, z: 40},
-        {x: 3, y: 4, z: 40},
-        {x: 3, y: 9, z: 40},
-        {x: 3, y: 9, z: 90},
+        {x: 1, y: 1, z: 1},
+        {x: 2, y: 1, z: 1},
+        {x: 2, y: 2, z: 1},
+        {x: 2, y: 2, z: 2},
+        {x: 3, y: 2, z: 2},
+        {x: 3, y: 3, z: 2},
+        {x: 3, y: 3, z: 3},
       ]);
     });
 
