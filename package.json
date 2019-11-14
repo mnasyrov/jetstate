@@ -25,18 +25,18 @@
     "react"
   ],
   "devDependencies": {
-    "@types/jest": "24.0.20",
+    "@types/jest": "24.0.23",
     "jest": "24.9.0",
-    "lerna": "3.18.3",
-    "prettier": "1.18.2",
-    "rollup": "1.26.0",
+    "lerna": "3.18.4",
+    "prettier": "1.19.1",
+    "rollup": "1.27.0",
     "rollup-plugin-typescript": "1.0.1",
     "rxjs": "6.5.3",
     "ts-jest": "24.1.0",
     "tslib": "1.10.0",
-    "tslint": "5.20.0",
+    "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
-    "typescript": "3.6.4"
+    "typescript": "3.7.2"
   },
   "scripts": {
     "postinstall": "lerna bootstrap",
