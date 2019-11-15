@@ -10,10 +10,7 @@ export function select<State extends object, V>(
   selector: Selector<State, V>,
 ): Observable<V> {
   return defer(() => {
-    return store.state$.pipe(
-      map(selector),
-      distinctUntilChanged(),
-    );
+    return store.state$.pipe(map(selector), distinctUntilChanged());
   });
 }
 
@@ -47,10 +44,7 @@ export function project<State extends object, V>(
     },
     get changes$() {
       if (!changes$) {
-        changes$ = store.changes$.pipe(
-          map(selector),
-          distinctUntilChanged(),
-        );
+        changes$ = store.changes$.pipe(map(selector), distinctUntilChanged());
       }
       return changes$;
     },
