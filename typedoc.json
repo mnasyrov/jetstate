@@ -1,0 +1,8 @@
+{
+  "name": "JetState",
+  "mode": "modules",
+  "out": "build/docs",
+  "exclude": ["**/node_modules/**", "**/*.spec.ts"],
+  "excludePrivate": true,
+  "skipInternal": true
+}
