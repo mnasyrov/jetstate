@@ -1,14 +1,17 @@
-import {Reducer, useEffect, useMemo, useReducer, useState} from 'react';
+import {Reducer, useEffect, useReducer, useRef, useState} from 'react';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 export function useAsObservable<T>(value: T): Observable<T> {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const subject = useMemo(() => new BehaviorSubject(value), []);
-  const value$ = useMemo(() => subject.asObservable(), [subject]);
+  const subjectRef = useRef<BehaviorSubject<T> | undefined>();
+  if (subjectRef.current === undefined) {
+    subjectRef.current = new BehaviorSubject(value);
+  }
   useEffect(() => {
-    subject.next(value);
-  }, [subject, value]);
-  return value$;
+    if (subjectRef.current && subjectRef.current.value !== value) {
+      subjectRef.current.next(value);
+    }
+  }, [subjectRef, value]);
+  return subjectRef.current;
 }
 
 export function useObservable<T>(value$: Observable<T>, initialValue: T): T;
