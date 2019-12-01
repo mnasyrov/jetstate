@@ -1,7 +1,7 @@
 {
   "name": "jetstate",
   "description": "Core of JetState - reactive state management with RxJS",
-  "version": "0.3.3",
+  "version": "0.4.1",
   "private": true,
   "license": "MIT",
   "author": {
