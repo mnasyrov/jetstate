@@ -1,7 +1,7 @@
 {
   "name": "@jetstate/core",
   "description": "JetState - reactive state management with RxJS",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "license": "MIT",
   "author": {
     "name": "Mikhail Nasyrov",
