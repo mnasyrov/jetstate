@@ -25,7 +25,7 @@
   "source": "src/index.ts",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.module.js",
   "umd:main": "dist/index.umd.js",
   "unpkg": "dist/index.umd.js",
   "peerDependencies": {
@@ -34,6 +34,6 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "microbundle --name jetstate-core"
+    "build": "microbundle --name jetstate-core --sourcemap false --no-compress"
   }
 }
