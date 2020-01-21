@@ -312,7 +312,7 @@ Usage example:
 
 ```typescript jsx
 import {Query, Store} from '@jetstate/core';
-import {useObservable} from '@jetstate/react';
+import {useObservable, useProjection} from '@jetstate/react';
 
 // Declare a state:
 export interface UserState {
@@ -331,6 +331,7 @@ export class UserStore extends Store<UserState> {
 // Use Query to read data from the store.
 export class UserQuery extends Query<UserState> {
   username$ = this.select(state => state.username);
+  usernameUpperCased = this.project(state => state.username.toUpperCase());
 }
 
 // Separate store updating from components.
@@ -347,10 +348,11 @@ export function UserComponent(props: {query: UserQuery; service: UserService}) {
   const {query, service} = props;
 
   const username = useObservable(query.username$);
+  const usernameUpperCased = useProjection(query.usernameUpperCased);
 
   return (
     <div>
-      <h1>Hello {username}!</h1>
+      <h1>Hello {username}! {usernameUpperCased}!!</h1>
       <input
         type="text"
         value={username}
