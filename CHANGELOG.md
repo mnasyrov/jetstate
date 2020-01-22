@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/mnasyrov/jetstate/compare/v0.5.1...v0.6.0) (2020-01-22)
+
+### Features
+
+- Store.update() takes a function to produce a patch. ([43006d6](https://github.com/mnasyrov/jetstate/commit/43006d6de54cd0144ce6b9d5de1224b7b01f5a88))
+
 ## [0.5.1](https://github.com/mnasyrov/jetstate/compare/v0.5.0...v0.5.1) (2020-01-22)
 
 ### Bug Fixes
