@@ -1,7 +1,7 @@
 {
   "name": "@jetstate/react",
   "description": "Helpers for using JetState with React.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "author": {
     "name": "Mikhail Nasyrov",
@@ -30,7 +30,7 @@
   "umd:main": "dist/index.umd.js",
   "unpkg": "dist/index.umd.js",
   "dependencies": {
-    "@jetstate/core": "0.5.0"
+    "@jetstate/core": "0.5.1"
   },
   "peerDependencies": {
     "react": "^16.8.0",
