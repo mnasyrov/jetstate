@@ -43,6 +43,13 @@ describe('Store', () => {
       store.update(undefined as any);
       expect(store.state).toBe(expectedState);
     });
+
+    it('should evaluate an updater callback to produce a patch', () => {
+      const store = new Store({foo: 'bar', xyz: 0});
+      store.update(({xyz}) => ({xyz: xyz + 1}));
+      store.update(({xyz}) => ({xyz: xyz + 1}));
+      expect(store.state).toEqual({foo: 'bar', xyz: 2});
+    });
   });
 
   describe('triggering value listeners with a new state by update() method', () => {

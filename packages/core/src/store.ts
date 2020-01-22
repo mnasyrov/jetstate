@@ -26,11 +26,16 @@ export class Store<State extends object> {
   readonly state$: Observable<Readonly<State>>;
   readonly changes$: Observable<Readonly<State>>;
 
-  update(patch: Partial<Readonly<State>> | null | undefined) {
+  update(
+    patch:
+      | Partial<Readonly<State>>
+      | ((state: State) => Partial<Readonly<State>>),
+  ) {
     if (patch === undefined || patch === null) {
       return;
     }
-    this.applyPatch(patch);
+    const resultPatch = typeof patch === 'function' ? patch(this.state) : patch;
+    this.applyPatch(resultPatch);
   }
 
   private applyPatch(patch: Partial<Readonly<State>>) {
