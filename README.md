@@ -28,14 +28,14 @@ JetState is framework agnostic, it is more like "M" in your MVVM, MVP and other 
                       +---------- UI Component <----------+
                         Actions                 Rendering
                        (methods)
-                         
+
 ```
 
 ## Installation
 
 Install from the NPM repository using npm or yarn:
 
-- `@jetstate/core` 
+- `@jetstate/core`
 
   Core functionality, framework agnostic. Can be used with Angular as is.
 
@@ -105,7 +105,10 @@ interface Store<State extends object> {
   readonly changes$: Observable<Readonly<State>>;
 
   /** Updates the store by a specified patch object */
-  update(patch: Partial<Readonly<State>> | null | undefined): void;
+  update(patch: Partial<Readonly<State>>): void;
+
+  /** Updates the store by a patch which is produced by calling the updater with a current state */
+  update(updater: (state: State) => Partial<Readonly<State>>): void;
 }
 ```
 
@@ -352,7 +355,9 @@ export function UserComponent(props: {query: UserQuery; service: UserService}) {
 
   return (
     <div>
-      <h1>Hello {username}! {usernameUpperCased}!!</h1>
+      <h1>
+        Hello {username}! {usernameUpperCased}!!
+      </h1>
       <input
         type="text"
         value={username}
