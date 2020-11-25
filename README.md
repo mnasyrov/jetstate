@@ -315,7 +315,7 @@ Usage example:
 
 ```typescript jsx
 import {Query, Store} from '@jetstate/core';
-import {useObservable, useProjection} from '@jetstate/react';
+import {useObservable, useProjection, useQuery} from '@jetstate/react';
 
 // Declare a state:
 export interface UserState {
@@ -352,12 +352,15 @@ export function UserComponent(props: {query: UserQuery; service: UserService}) {
 
   const username = useObservable(query.username$);
   const usernameUpperCased = useProjection(query.usernameUpperCased);
+  const usernameLowerCased = useQuery(query, state =>
+    state.username.toLowerCase(),
+  );
 
   return (
     <div>
-      <h1>
-        Hello {username}! {usernameUpperCased}!!
-      </h1>
+      <h1>Hello {username}!</h1>
+      <h1>Hello {usernameUpperCased}!</h1>
+      <h1>Hello {usernameLowerCased}!</h1>
       <input
         type="text"
         value={username}

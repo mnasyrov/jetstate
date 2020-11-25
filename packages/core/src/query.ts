@@ -51,7 +51,9 @@ export function project<State extends object, V>(
   };
 }
 
-export function createQuery<State extends object>(store: Store<State>) {
+export function createQuery<State extends object>(
+  store: Store<State>,
+): Query<State> {
   return new Query<State>(store);
 }
 
